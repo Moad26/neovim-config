@@ -23,4 +23,3 @@ vim.opt.relativenumber = true      -- Show relative line numbers
 vim.opt.signcolumn = 'yes'         -- Always show sign column
 vim.opt.termguicolors = true       -- Enable true colors
 vim.opt.list = true                -- Show whitespace characters
-vim.opt.listchars = { tab = "▸ ", trail = "·", extends = "→", precedes = "←" }
