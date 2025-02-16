@@ -1,12 +1,11 @@
 return {
- "nvim-lualine/lualine.nvim",
-  dependencies = { "echasnovski/mini.icons" },
-  config = function()
-    require('lualine').setup({
-      options = {
-      theme = 'auto'
-     }
-   })
-  end
-
+	"nvim-lualine/lualine.nvim",
+	dependencies = { "echasnovski/mini.icons" },
+	config = function()
+		require("lualine").setup({
+			options = {
+				theme = "auto",
+			},
+		})
+	end,
 }

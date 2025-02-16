@@ -6,7 +6,7 @@ vim.opt.smartindent = true         -- Smart indentation
 vim.opt.wrap = false               -- Disable line wrapping
 vim.opt.cursorline = true          -- Highlight the current line
 vim.g.mapleader = " "
-vim.g.background = "light"
+vim.g.background = "dark"
 vim.opt.termguicolors = true
 
 vim.opt.swapfile = false
