@@ -8,11 +8,11 @@ return {
 				auto_install = true,
 				highlight = {
 					enable = true,
-          disable = {"tex"},
+          disable = {"latex"},
 				},
 				indent = {
 					enable = true,
-					disable = { "tex" },
+					disable = { "latex" },
 				},
 				rainbow = {
 					enable = true,
