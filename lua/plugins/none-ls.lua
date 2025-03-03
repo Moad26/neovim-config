@@ -15,6 +15,7 @@ return {
 				null_ls.builtins.formatting.clang_format,
         null_ls.builtins.diagnostics.shellcheck,
         null_ls.builtins.formatting.shellharden,
+        null_ls.builtins.formatting.beautysh,
 			},
 		})
 		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
