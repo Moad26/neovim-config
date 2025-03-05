@@ -40,4 +40,16 @@ return {
   {
     "EdenEast/nightfox.nvim",
   },
+  {
+    "Shatur/neovim-ayu",
+  },
+  {
+    "craftzdog/solarized-osaka.nvim",
+  },
+  {
+    "shaunsingh/nord.nvim",
+  },
+  {
+    "Mofiqul/dracula.nvim",
+  }
 }

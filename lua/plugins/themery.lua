@@ -105,6 +105,22 @@ return {
 					name = "carbonfox",
 					colorscheme = "carbonfox",
 				},
+        {
+          name="ayu",
+          colorscheme = "ayu"
+        },
+        {
+          name="solarized-osaka",
+          colorscheme="solarized-osaka",
+        },
+        {
+          name="nord",
+          colorscheme="nord",
+        },
+        {
+          name="dracula",
+          colorscheme="dracula",
+        }
 			},
 		})
 	end,
