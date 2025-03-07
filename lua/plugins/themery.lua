@@ -120,6 +120,34 @@ return {
         {
           name="dracula",
           colorscheme="dracula",
+        },
+        {
+          name="melange",
+          colorscheme="melange",
+        },
+        {
+          name="moonfly",
+          colorscheme="moonfly",
+        },
+        {
+          name="bamboo",
+          colorscheme="bamboo",
+        },
+        {
+          name="poimandres",
+          colorscheme="poimandres",
+        },
+        {
+          name="miasma",
+          colorscheme="miasma",
+        },
+        {
+          name="evergarden",
+          colorscheme="evergarden",
+        },
+        {
+          name="nordic",
+          colorscheme="nordic",
         }
 			},
 		})
