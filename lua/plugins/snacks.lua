@@ -13,7 +13,7 @@ return {
     -- refer to the configuration section below
     animate = {},
     bigfile = { enabled = true },
-    dashboard = { enabled = true },
+    dashboard = { example="compact_files"},
     explorer = { enabled = true },
     indent = { enabled = true },
     input = { enabled = true },
