@@ -148,7 +148,11 @@ return {
         {
           name="nordic",
           colorscheme="nordic",
-        }
+        },
+        {
+          name = "vague",
+          colorscheme = "vague",
+        },
 			},
 		})
 	end,

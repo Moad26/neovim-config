@@ -74,4 +74,7 @@ return {
 	{
 		"AlexvZyl/nordic.nvim",
 	},
+  {
+    "vague2k/vague.nvim",
+  },
 }
