@@ -153,6 +153,14 @@ return {
           name = "vague",
           colorscheme = "vague",
         },
+        {
+          name = "zenbones",
+          colorscheme = "zenbones",
+        },
+        {
+          name = "kanagawa-paper",
+          colorscheme = "kanagawa-paper",
+        },
 			},
 		})
 	end,

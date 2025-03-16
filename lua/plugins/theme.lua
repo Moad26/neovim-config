@@ -74,7 +74,14 @@ return {
 	{
 		"AlexvZyl/nordic.nvim",
 	},
-  {
-    "vague2k/vague.nvim",
-  },
+	{
+		"vague2k/vague.nvim",
+	},
+	{
+		"zenbones-theme/zenbones.nvim",
+		dependencies = { "rktjmp/lush.nvim" },
+	},
+	{
+		"thesimonho/kanagawa-paper.nvim",
+	},
 }
