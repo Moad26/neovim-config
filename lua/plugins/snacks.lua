@@ -1,23 +1,24 @@
 return {
-  "folke/snacks.nvim",
-  dependencies = {
-    "echasnovski/mini.icons",
-    "nvim-tree/nvim-web-devicons",
-  },
-  priority = 1000,
-  lazy = false,
-  ---@type snacks.Config
-  opts = {
-    animate = { enabled = true },
-    bigfile = { enabled = true },
-    dashboard = { enabled = true },
-    explorer = { enabled = true },
-    indent = { enabled = true },
-    input = { enabled = true },
-    quickfile = { enabled = true },
-    scope = { enabled = true },
-    statuscolumn = { enabled = true },
-    words = { enabled = true },
-    util = { enabled = true },
-  },
+	"folke/snacks.nvim",
+	dependencies = {
+		"echasnovski/mini.icons",
+		"nvim-tree/nvim-web-devicons",
+	},
+	lazy = false,
+	priority = 1000,
+
+	---@type snacks.Config
+	opts = {
+		animate = { enabled = true }, -- smooth UI animations
+		bigfile = { enabled = true }, -- optimize for large files
+		dashboard = { enabled = true }, -- enhance alpha.nvim or other dashboards
+		explorer = { enabled = true }, -- UI for file explorers like neo-tree
+		indent = { enabled = true }, -- enhanced indent guides
+		input = { enabled = true }, -- prettier command/input UI
+		quickfile = { enabled = false }, -- set to true if you use it
+		scope = { enabled = false }, -- enable if you want scope highlighting
+		statuscolumn = { enabled = true }, -- line number + diagnostics formatting
+		words = { enabled = true }, -- highlight repeated words
+		util = { enabled = true }, -- utility functions for other snacks modules
+	},
 }
