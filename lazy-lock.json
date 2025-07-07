@@ -15,6 +15,7 @@
   "gruvbox-material": { "branch": "master", "commit": "146f40fd42cbef30fed69b4ef51329aeeaceb909" },
   "kanagawa-paper.nvim": { "branch": "master", "commit": "f2e4dfdc6e52a83b41c7d910f241735b4d2fe3f7" },
   "kanagawa.nvim": { "branch": "master", "commit": "cfd67b0e1eeaa04302b8c7eb072253d24bf22d84" },
+  "kanso.nvim": { "branch": "main", "commit": "748023fd273782e6e056620ce66a176532cdf375" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "lazygit.nvim": { "branch": "main", "commit": "b9eae3badab982e71abab96d3ee1d258f0c07961" },
   "lualine.nvim": { "branch": "master", "commit": "f4f791f67e70d378a754d02da068231d2352e5bc" },

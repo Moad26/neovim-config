@@ -45,6 +45,10 @@ return {
 			{ name = "nordic", colorscheme = "nordic" },
 			{ name = "vague", colorscheme = "vague" },
 			{ name = "zenbones", colorscheme = "zenbones" },
+			{ name = "kanso-zen", colorscheme = "kanso-zen" },
+			{ name = "kanso-ink", colorscheme = "kanso-ink" },
+			{ name = "kanso-mist", colorscheme = "kanso-mist" },
+			{ name = "kanso-pearl", colorscheme = "kanso-pearl" },
 		}
 
 		table.sort(themes, function(a, b)
