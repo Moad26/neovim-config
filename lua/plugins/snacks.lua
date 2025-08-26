@@ -11,7 +11,21 @@ return {
 	opts = {
 		animate = { enabled = true }, -- smooth UI animations
 		bigfile = { enabled = true }, -- optimize for large files
-		dashboard = { enabled = true }, -- enhance alpha.nvim or other dashboards
+		dashboard = {
+			sections = {
+				{
+					section = "terminal",
+					cmd = "chafa ~/.config/nvim/walls/wall.png --format symbols --symbols vhalf --size 60x17 --stretch; sleep .1",
+					height = 17,
+					padding = 1,
+				},
+				{
+					pane = 2,
+					{ section = "keys", gap = 1, padding = 1 },
+					{ section = "startup" },
+				},
+			},
+		}, -- enhance alpha.nvim or other dashboards
 		explorer = { enabled = true }, -- UI for file explorers like neo-tree
 		indent = { enabled = true }, -- enhanced indent guides
 		input = { enabled = true }, -- prettier command/input UI
