@@ -45,8 +45,6 @@ return {
 				"cmake",
 				-- GraphQL (if you use it)
 				"graphql",
-				-- Bash
-				"bash-language-server", -- Better bash LSP
 			},
 		})
 
