@@ -3,6 +3,7 @@ vim.opt.tabstop = 2 -- Number of spaces per tab
 vim.opt.softtabstop = 2 -- Editing feels like 2 spaces per tab
 vim.opt.shiftwidth = 2 -- Indent by 2 spaces
 vim.opt.smartindent = true -- Smart indentation
+vim.opt.autoindent = true
 vim.opt.wrap = false -- Disable line wrapping
 vim.opt.cursorline = true -- Highlight the current line
 vim.g.mapleader = " "

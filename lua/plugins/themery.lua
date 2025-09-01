@@ -49,6 +49,8 @@ return {
 			{ name = "kanso-ink", colorscheme = "kanso-ink" },
 			{ name = "kanso-mist", colorscheme = "kanso-mist" },
 			{ name = "kanso-pearl", colorscheme = "kanso-pearl" },
+			{ name = "citruszest", colorscheme = "citruszest" },
+			{ name = "vesper", colorscheme = "vesper" },
 		}
 
 		table.sort(themes, function(a, b)

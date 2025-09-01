@@ -19,6 +19,8 @@ return {
           "tailwindcss", -- Tailwind CSS
           "emmet_ls",    -- Emmet for HTML/CSS
           "jsonls",      -- JSON
+          -- Markdown LSP
+          "marksman",    -- Markdown language server
         },
       })
     end,
@@ -28,6 +30,22 @@ return {
     config = function()
       local lspconfig = require("lspconfig")
 
+      -- Configure diagnostics display
+      vim.diagnostic.config({
+        virtual_text = true,      -- Show diagnostics as virtual text
+        signs = true,             -- Show signs in the sign column
+        underline = true,         -- Underline problematic text
+        update_in_insert = false, -- Don't update diagnostics while typing
+        severity_sort = true,     -- Sort by severity
+        float = {
+          focusable = false,
+          close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+          border = 'rounded',
+          source = 'always',
+          prefix = ' ',
+          scope = 'cursor',
+        },
+      })
       -- Get capabilities from nvim-cmp
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -62,6 +80,19 @@ return {
       })
       lspconfig.jsonls.setup({ capabilities = capabilities })
 
+      -- Markdown LSP
+      lspconfig.marksman.setup({
+        capabilities = capabilities,
+        filetypes = { "markdown" },
+        settings = {
+          marksman = {
+            -- Enable completion for links, references, etc.
+            completion = {
+              wiki = { enabled = true }
+            }
+          }
+        }
+      })
       -- Keymaps
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
@@ -70,7 +101,8 @@ return {
       vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
       vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, {})
+      vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic error messages" })
+      vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic quickfix list" })
     end,
   },
 }
-
