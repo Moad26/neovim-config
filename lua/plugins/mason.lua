@@ -45,6 +45,8 @@ return {
 				"cmake",
 				-- GraphQL (if you use it)
 				"graphql",
+				-- Bash
+				"bash-language-server", -- Better bash LSP
 			},
 		})
 
@@ -65,6 +67,10 @@ return {
 				"cpplint", -- C++ linter (optional)
 				--"bash", -- Bash linter
 				"markdownlint", -- Markdown
+
+				-- Bash
+				"shfmt", -- Shell formatter
+				"shellcheck", -- Shell linter
 
 				-- Additional tools
 				"debugpy", -- Python debugger

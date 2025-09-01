@@ -26,7 +26,8 @@ return {
 			json = { "jsonlint" },
 
 			-- Bash
-			-- bash = { "bash" },
+			bash = { "shellcheck" },
+			sh = { "shellcheck" },
 
 			-- Markdown
 			markdown = { "markdownlint" },

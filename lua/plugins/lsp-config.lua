@@ -278,5 +278,17 @@ return {
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
+
+		-- bashls
+		lspconfig.bashls.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			filetypes = { "sh", "bash" },
+			settings = {
+				bashIde = {
+					globPattern = "*@(.sh|.inc|.bash|.command)",
+				},
+			},
+		})
 	end,
 }

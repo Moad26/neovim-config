@@ -73,7 +73,7 @@ return {
 		})
 
 		-- Keymap for manual formatting
-		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+		vim.keymap.set({ "n", "v" }, "<leader>gf", function()
 			conform.format({
 				lsp_fallback = true,
 				async = false,
