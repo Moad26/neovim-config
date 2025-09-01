@@ -6,6 +6,12 @@ return {
 		"hrsh7th/cmp-buffer", -- Added buffer completion source
 	},
 	{
+		"hrsh7th/cmp-path", -- Path completion source
+	},
+	{
+		"hrsh7th/cmp-cmdline", -- Command line completion
+	},
+	{
 		"L3MON4D3/LuaSnip",
 		dependencies = {
 			"saadparwaiz1/cmp_luasnip",
