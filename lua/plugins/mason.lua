@@ -31,6 +31,7 @@ return {
 				"svelte",
 				"emmet_ls",
 				"jsonls",
+				"graphql", -- Add GraphQL LSP separately
 				-- Python
 				"pyright",
 				-- C/C++
@@ -43,8 +44,6 @@ return {
 				"bashls",
 				-- Build systems
 				"cmake",
-				-- GraphQL (if you use it)
-				"graphql",
 			},
 		})
 
@@ -53,18 +52,15 @@ return {
 				-- Formatters
 				"prettier", -- JS/TS/HTML/CSS/JSON/Markdown
 				"stylua", -- Lua formatter
-				"black", -- Python formatter
-				"isort", -- Python import sorter
+				"ruff", -- Python formatter/linter (replaces black, isort, flake8, pylint)
 				"clang-format", -- C/C++ formatter
 
 				-- Linters
 				"eslint_d", -- Fast ESLint daemon
-				"pylint", -- Python linter
-				"flake8", -- Alternative Python linter
 				"mypy", -- Python type checker
 				"cpplint", -- C++ linter (optional)
-				--"bash", -- Bash linter
-				"markdownlint", -- Markdown
+				"jsonlint", -- JSON linter
+				"markdownlint", -- Markdown linter
 
 				-- Bash
 				"shfmt", -- Shell formatter
@@ -72,6 +68,7 @@ return {
 
 				-- Additional tools
 				"debugpy", -- Python debugger
+				"taplo", -- TOML formatter
 			},
 		})
 	end,

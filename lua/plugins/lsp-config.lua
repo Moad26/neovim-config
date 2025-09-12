@@ -62,7 +62,7 @@ return {
 			virtual_text = {
 				enabled = true,
 				source = "always", -- Show source of diagnostic
-				prefix = "●", -- Could also use "■", "▎", etc.
+				prefix = "●", -- Could also use "■ ", "▎", etc.
 			},
 			signs = true,
 			underline = true,
@@ -94,6 +94,13 @@ return {
 
 		-- Add additional capabilities
 		capabilities.textDocument.completion.completionItem.snippetSupport = true
+		capabilities.textDocument.completion.completionItem.resolveSupport = {
+			properties = {
+				"documentation",
+				"detail",
+				"additionalTextEdits",
+			},
+		}
 
 		-- Common on_attach function for all LSPs
 		local on_attach = function(client, bufnr)
@@ -137,7 +144,7 @@ return {
 			},
 		})
 
-		-- JavaScript/TypeScript
+		-- JavaScript/TypeScript - Fixed to handle JSX properly
 		lspconfig.ts_ls.setup({
 			capabilities = capabilities,
 			on_attach = function(client, bufnr)
@@ -145,7 +152,14 @@ return {
 				client.server_capabilities.documentFormattingProvider = false
 				on_attach(client, bufnr)
 			end,
-			filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+			-- Properly configure filetypes including JSX
+			filetypes = {
+				"typescript",
+				"typescriptreact",
+				"javascript",
+				"javascriptreact",
+				-- Don't include graphql here to avoid conflicts
+			},
 			settings = {
 				typescript = {
 					inlayHints = {
@@ -172,15 +186,49 @@ return {
 			},
 		})
 
+		-- GraphQL - Separate configuration to avoid conflicts
+		lspconfig.graphql.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			filetypes = { "graphql", "gql", "svelte", "astro", "vue" },
+			root_dir = lspconfig.util.root_pattern(
+				".graphqlrc*",
+				".graphql.config.*",
+				"graphql.config.*",
+				"package.json"
+			),
+		})
+
 		-- Web development LSPs
 		lspconfig.html.setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
+			filetypes = { "html", "templ" },
 		})
 
 		lspconfig.cssls.setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
+			settings = {
+				css = {
+					validate = true,
+					lint = {
+						unknownAtRules = "ignore",
+					},
+				},
+				scss = {
+					validate = true,
+					lint = {
+						unknownAtRules = "ignore",
+					},
+				},
+				less = {
+					validate = true,
+					lint = {
+						unknownAtRules = "ignore",
+					},
+				},
+			},
 		})
 
 		lspconfig.tailwindcss.setup({
@@ -267,19 +315,7 @@ return {
 			filetypes = { "markdown", "markdown.mdx" },
 		})
 
-		-- Shell scripting
-		lspconfig.bashls.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- CMake
-		lspconfig.cmake.setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- bashls
+		-- Shell scripting - Remove duplicate bashls setup
 		lspconfig.bashls.setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
@@ -289,6 +325,12 @@ return {
 					globPattern = "*@(.sh|.inc|.bash|.command)",
 				},
 			},
+		})
+
+		-- CMake
+		lspconfig.cmake.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
 		})
 	end,
 }
