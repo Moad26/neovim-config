@@ -24,8 +24,8 @@ return {
 				graphql = { "prettier" },
 				handlebars = { "prettier" },
 
-				-- Python
-				python = { "isort", "black" },
+				-- Python - Using Ruff for both formatting and import sorting
+				python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
 
 				-- C/C++
 				c = { "clang-format" },
@@ -60,10 +60,6 @@ return {
 				prettier = {
 					-- You can add custom options here if needed
 					prepend_args = { "--tab-width", "2", "--print-width", "100" },
-				},
-				-- Customize black
-				black = {
-					prepend_args = { "--line-length", "88" },
 				},
 				-- Customize clang-format
 				["clang-format"] = {

@@ -4,12 +4,17 @@ return {
 	config = function()
 		local lint = require("lint")
 
+		lint.linters.cpplint.args = {
+			"--filter=-legal/copyright",
+			"--linelength=120", -- Optional: adjust line length if needed
+		}
+
 		lint.linters_by_ft = {
-			-- Python
+			-- Python - Using Ruff as the primary linter
 			python = {
-				--"pylint",
-				"flake8",
-				--"mypy"
+				"ruff",
+				-- Optionally keep mypy for type checking if you want static type analysis
+				-- "mypy"
 			},
 
 			-- JavaScript/TypeScript
@@ -96,6 +101,9 @@ return {
 
 				-- Remove mypy if no config file is found (optional, mypy can work without config)
 				-- remove_linter_if_missing_config_file(linters, "mypy", { "mypy.ini", ".mypy.ini", "pyproject.toml", "setup.cfg" })
+				
+				-- Remove ruff if no config file is found (optional, ruff works well with defaults)
+				-- remove_linter_if_missing_config_file(linters, "ruff", { "ruff.toml", "pyproject.toml", ".ruff.toml" })
 			end
 ]]
 
