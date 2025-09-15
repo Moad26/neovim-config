@@ -13,17 +13,9 @@ return {
 		bigfile = { enabled = true }, -- optimize for large files
 		dashboard = {
 			sections = {
-				{
-					section = "terminal",
-					cmd = "chafa ~/.config/nvim/walls/wall.png --format symbols --symbols vhalf --size 60x17 --stretch; sleep .1",
-					height = 17,
-					padding = 1,
-				},
-				{
-					pane = 2,
-					{ section = "keys", gap = 1, padding = 1 },
-					{ section = "startup" },
-				},
+				{ section = "header" },
+				{ section = "keys", gap = 1, padding = 1 },
+				{ section = "startup" },
 			},
 		},
 		explorer = { enabled = true }, -- UI for file explorers like neo-tree

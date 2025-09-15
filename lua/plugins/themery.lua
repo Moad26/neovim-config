@@ -51,6 +51,8 @@ return {
 			{ name = "kanso-pearl", colorscheme = "kanso-pearl" },
 			{ name = "citruszest", colorscheme = "citruszest" },
 			{ name = "vesper", colorscheme = "vesper" },
+			{ name = "witch-dark", colorscheme = "witch-dark" },
+			{ name = "witch-light", colorscheme = "witch-light" },
 		}
 
 		table.sort(themes, function(a, b)
