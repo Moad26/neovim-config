@@ -6,8 +6,8 @@ return {
 		{ "folke/lazydev.nvim", opts = {} },
 	},
 	config = function()
-		local lspconfig = require("lspconfig")
 		local keymap = vim.keymap -- for conciseness
+
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
@@ -62,7 +62,7 @@ return {
 			virtual_text = {
 				enabled = true,
 				source = "always", -- Show source of diagnostic
-				prefix = "●", -- Could also use "■ ", "▎", etc.
+				prefix = "●", -- Could also use "▎", "▍", etc.
 			},
 			signs = true,
 			underline = true,
@@ -108,10 +108,8 @@ return {
 			vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 		end
 
-		-- Setup LSPs with enhanced configuration
-
 		-- C/C++
-		lspconfig.clangd.setup({
+		vim.lsp.config.clangd = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			cmd = {
@@ -126,10 +124,10 @@ return {
 			init_options = {
 				usePlaceholders = true,
 			},
-		})
+		}
 
 		-- Python
-		lspconfig.pyright.setup({
+		vim.lsp.config.pyright = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			settings = {
@@ -142,23 +140,21 @@ return {
 					},
 				},
 			},
-		})
+		}
 
-		-- JavaScript/TypeScript - Fixed to handle JSX properly
-		lspconfig.ts_ls.setup({
+		-- JavaScript/TypeScript
+		vim.lsp.config.ts_ls = {
 			capabilities = capabilities,
 			on_attach = function(client, bufnr)
 				-- Disable formatting in favor of prettier
 				client.server_capabilities.documentFormattingProvider = false
 				on_attach(client, bufnr)
 			end,
-			-- Properly configure filetypes including JSX
 			filetypes = {
 				"typescript",
 				"typescriptreact",
 				"javascript",
 				"javascriptreact",
-				-- Don't include graphql here to avoid conflicts
 			},
 			settings = {
 				typescript = {
@@ -184,29 +180,32 @@ return {
 					},
 				},
 			},
-		})
+		}
 
-		-- GraphQL - Separate configuration to avoid conflicts
-		lspconfig.graphql.setup({
+		-- GraphQL
+		vim.lsp.config.graphql = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = { "graphql", "gql", "svelte", "astro", "vue" },
-			root_dir = lspconfig.util.root_pattern(
-				".graphqlrc*",
-				".graphql.config.*",
-				"graphql.config.*",
-				"package.json"
-			),
-		})
+			root_dir = function(fname)
+				return vim.fs.find({
+					".graphqlrc*",
+					".graphql.config.*",
+					"graphql.config.*",
+					"package.json",
+				}, { upward = true, path = fname })[1]
+			end,
+		}
 
-		-- Web development LSPs
-		lspconfig.html.setup({
+		-- HTML
+		vim.lsp.config.html = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = { "html", "templ" },
-		})
+		}
 
-		lspconfig.cssls.setup({
+		-- CSS
+		vim.lsp.config.cssls = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			settings = {
@@ -229,9 +228,10 @@ return {
 					},
 				},
 			},
-		})
+		}
 
-		lspconfig.tailwindcss.setup({
+		-- Tailwind CSS
+		vim.lsp.config.tailwindcss = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = {
@@ -245,9 +245,10 @@ return {
 				"vue",
 				"svelte",
 			},
-		})
+		}
 
-		lspconfig.emmet_ls.setup({
+		-- Emmet
+		vim.lsp.config.emmet_ls = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = {
@@ -260,16 +261,15 @@ return {
 				"typescriptreact",
 				"vue",
 			},
-		})
+		}
 
 		-- JSON
-		lspconfig.jsonls.setup({
+		vim.lsp.config.jsonls = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			settings = {
 				json = {
 					validate = { enable = true },
-					-- You can add common schemas here manually if needed:
 					schemas = {
 						{
 							fileMatch = { "package.json" },
@@ -279,14 +279,13 @@ return {
 							fileMatch = { "tsconfig.json", "tsconfig.*.json" },
 							url = "https://json.schemastore.org/tsconfig.json",
 						},
-						-- Add more schemas as needed
 					},
 				},
 			},
-		})
+		}
 
-		-- Lua (for Neovim configuration)
-		lspconfig.lua_ls.setup({
+		-- Lua
+		vim.lsp.config.lua_ls = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			settings = {
@@ -306,17 +305,17 @@ return {
 					},
 				},
 			},
-		})
+		}
 
 		-- Markdown
-		lspconfig.marksman.setup({
+		vim.lsp.config.marksman = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = { "markdown", "markdown.mdx" },
-		})
+		}
 
-		-- Shell scripting - Remove duplicate bashls setup
-		lspconfig.bashls.setup({
+		-- Bash
+		vim.lsp.config.bashls = {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = { "sh", "bash" },
@@ -325,12 +324,12 @@ return {
 					globPattern = "*@(.sh|.inc|.bash|.command)",
 				},
 			},
-		})
+		}
 
 		-- CMake
-		lspconfig.cmake.setup({
+		vim.lsp.config.cmake = {
 			capabilities = capabilities,
 			on_attach = on_attach,
-		})
+		}
 	end,
 }
