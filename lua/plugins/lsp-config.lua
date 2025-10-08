@@ -137,6 +137,12 @@ return {
 						diagnosticMode = "workspace",
 						useLibraryCodeForTypes = true,
 						typeCheckingMode = "basic", -- or "strict"
+						reportOperatorIssue = "none", -- Disables "Operator not supported" errors
+						reportReturnType = "warning", -- Changes return type errors to warnings
+						reportOptionalMemberAccess = "warning",
+						reportOptionalOperand = "warning",
+						reportOptionalSubscript = "warning",
+						reportGeneralTypeIssues = "warning",
 					},
 				},
 			},
@@ -330,6 +336,16 @@ return {
 		vim.lsp.config.cmake = {
 			capabilities = capabilities,
 			on_attach = on_attach,
+		}
+		vim.lsp.config.tinymist = {
+			capabilities = capabilities,
+			on_attach = on_attach,
+			filetypes = { "typst" },
+			settings = {
+				formatterMode = "typstyle",
+				exportPdf = "never",
+				semanticTokens = "disable",
+			},
 		}
 	end,
 }

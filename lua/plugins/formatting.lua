@@ -40,6 +40,7 @@ return {
 
 				-- Other
 				toml = { "taplo" },
+				typst = { "typstyle" },
 			},
 
 			-- Format on save configuration

@@ -44,6 +44,8 @@ return {
 				"bashls",
 				-- Build systems
 				"cmake",
+				-- typst
+				"tinymist",
 			},
 		})
 
