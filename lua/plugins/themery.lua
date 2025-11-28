@@ -53,6 +53,10 @@ return {
 			{ name = "vesper", colorscheme = "vesper" },
 			{ name = "witch-dark", colorscheme = "witch-dark" },
 			{ name = "witch-light", colorscheme = "witch-light" },
+			{ name = "oxocarbon", colorscheme = "oxocarbon" },
+			{ name = "rasmus", colorscheme = "rasmus" },
+			{ name = "eldritch", colorscheme = "eldritch" },
+			{ name = "tundra", colorscheme = "tundra" },
 		}
 
 		table.sort(themes, function(a, b)

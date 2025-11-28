@@ -6,54 +6,52 @@ return {
 		{ "folke/lazydev.nvim", opts = {} },
 	},
 	config = function()
-		local keymap = vim.keymap -- for conciseness
+		local keymap = vim.keymap
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
-				-- Buffer local mappings.
-				-- See `:help vim.lsp.*` for documentation on any of the below functions
 				local opts = { buffer = ev.buf, silent = true }
 
 				-- set keybinds
 				opts.desc = "Show LSP references"
-				keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+				keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
 
 				opts.desc = "Go to declaration"
-				keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+				keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
 
 				opts.desc = "Show LSP definitions"
-				keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+				keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
 
 				opts.desc = "Show LSP implementations"
-				keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+				keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 
 				opts.desc = "Show LSP type definitions"
-				keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
+				keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
 				opts.desc = "See available code actions"
-				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
+				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
 
 				opts.desc = "Smart rename"
-				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
+				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
 				opts.desc = "Show buffer diagnostics"
-				keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+				keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 
 				opts.desc = "Show line diagnostics"
-				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
 
 				opts.desc = "Go to previous diagnostic"
-				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 
 				opts.desc = "Go to next diagnostic"
-				keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+				keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 
 				opts.desc = "Show documentation for what is under cursor"
-				keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+				keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
 				opts.desc = "Restart LSP"
-				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
 			end,
 		})
 
@@ -61,8 +59,8 @@ return {
 		vim.diagnostic.config({
 			virtual_text = {
 				enabled = true,
-				source = "always", -- Show source of diagnostic
-				prefix = "●", -- Could be using "▎", "▍", etc.
+				source = "always",
+				prefix = "●",
 			},
 			signs = true,
 			underline = true,
@@ -83,7 +81,7 @@ return {
 		})
 
 		-- Define diagnostic signs
-		local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
+		local signs = { Error = " ", Warn = " ", Hint = "󰌶 ", Info = " " }
 		for type, icon in pairs(signs) do
 			local hl = "DiagnosticSign" .. type
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
@@ -104,10 +102,10 @@ return {
 
 		-- Common on_attach function for all LSPs
 		local on_attach = function(client, bufnr)
-			-- Enable completion triggered by <c-x><c-o>
 			vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 		end
 
+		-- Configure all LSP servers
 		-- C/C++
 		vim.lsp.config.clangd = {
 			capabilities = capabilities,
@@ -117,7 +115,7 @@ return {
 				"--background-index",
 				"--clang-tidy",
 				"--header-insertion=iwyu",
-				"--completion-style=detailed",
+				"--completion-style=bundled",
 				"--function-arg-placeholders",
 				"--fallback-style=llvm",
 			},
@@ -136,9 +134,9 @@ return {
 						autoSearchPaths = true,
 						diagnosticMode = "workspace",
 						useLibraryCodeForTypes = true,
-						typeCheckingMode = "basic", -- or "strict"
-						reportOperatorIssue = "none", -- Disables "Operator not supported" errors
-						reportReturnType = "warning", -- Changes return type errors to warnings
+						typeCheckingMode = "basic",
+						reportOperatorIssue = "none",
+						reportReturnType = "warning",
 						reportOptionalMemberAccess = "warning",
 						reportOptionalOperand = "warning",
 						reportOptionalSubscript = "warning",
@@ -152,7 +150,6 @@ return {
 		vim.lsp.config.ts_ls = {
 			capabilities = capabilities,
 			on_attach = function(client, bufnr)
-				-- Disable formatting in favor of prettier
 				client.server_capabilities.documentFormattingProvider = false
 				on_attach(client, bufnr)
 			end,
@@ -193,14 +190,6 @@ return {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = { "graphql", "gql", "svelte", "astro", "vue" },
-			root_dir = function(fname)
-				return vim.fs.find({
-					".graphqlrc*",
-					".graphql.config.*",
-					"graphql.config.*",
-					"package.json",
-				}, { upward = true, path = fname })[1]
-			end,
 		}
 
 		-- HTML
@@ -240,17 +229,6 @@ return {
 		vim.lsp.config.tailwindcss = {
 			capabilities = capabilities,
 			on_attach = on_attach,
-			filetypes = {
-				"html",
-				"css",
-				"scss",
-				"javascript",
-				"javascriptreact",
-				"typescript",
-				"typescriptreact",
-				"vue",
-				"svelte",
-			},
 		}
 
 		-- Emmet
@@ -317,14 +295,12 @@ return {
 		vim.lsp.config.marksman = {
 			capabilities = capabilities,
 			on_attach = on_attach,
-			filetypes = { "markdown", "markdown.mdx" },
 		}
 
 		-- Bash
 		vim.lsp.config.bashls = {
 			capabilities = capabilities,
 			on_attach = on_attach,
-			filetypes = { "sh", "bash" },
 			settings = {
 				bashIde = {
 					globPattern = "*@(.sh|.inc|.bash|.command)",
@@ -337,15 +313,35 @@ return {
 			capabilities = capabilities,
 			on_attach = on_attach,
 		}
+
+		-- Typst
 		vim.lsp.config.tinymist = {
 			capabilities = capabilities,
 			on_attach = on_attach,
-			filetypes = { "typst" },
 			settings = {
 				formatterMode = "typstyle",
 				exportPdf = "never",
 				semanticTokens = "disable",
 			},
 		}
+
+		-- CRITICAL: Enable all configured LSP servers
+		-- This is what was missing! Without this, servers are configured but not started
+		vim.lsp.enable({
+			"clangd",
+			"pyright",
+			"ts_ls",
+			"graphql",
+			"html",
+			"cssls",
+			"tailwindcss",
+			"emmet_ls",
+			"jsonls",
+			"lua_ls",
+			"marksman",
+			"bashls",
+			"cmake",
+			"tinymist",
+		})
 	end,
 }

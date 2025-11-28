@@ -3,20 +3,20 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	{
-		"hrsh7th/cmp-buffer", -- Added buffer completion source
+		"hrsh7th/cmp-buffer",
 	},
 	{
-		"hrsh7th/cmp-path", -- Path completion source
+		"hrsh7th/cmp-path",
 	},
 	{
-		"hrsh7th/cmp-cmdline", -- Command line completion
+		"hrsh7th/cmp-cmdline",
+	},
+	{
+		"onsails/lspkind.nvim",
 	},
 	{
 		"L3MON4D3/LuaSnip",
 		build = (function()
-			-- Build Step is needed for regex support in snippets
-			-- This step is not supported in many windows environments
-			-- Remove the below condition to re-enable on windows
 			if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
 				return
 			end
@@ -27,12 +27,8 @@ return {
 			"rafamadriz/friendly-snippets",
 		},
 		config = function()
-			-- Setting LuaSnip config
 			require("luasnip").config.set_config({
-				-- Enable autotriggered snippets
 				enable_autosnippets = true,
-
-				-- Use Tab (or some other key if you prefer) to trigger visual selection
 				store_selection_keys = "<Tab>",
 			})
 		end,
@@ -41,6 +37,7 @@ return {
 		"hrsh7th/nvim-cmp",
 		config = function()
 			local cmp = require("cmp")
+			local lspkind = require("lspkind")
 			require("luasnip.loaders.from_vscode").lazy_load()
 
 			cmp.setup({
@@ -59,7 +56,6 @@ return {
 					["<C-Space>"] = cmp.mapping.complete(),
 					["<C-e>"] = cmp.mapping.abort(),
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					-- Add Tab and Shift-Tab for snippet navigation
 					["<Tab>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
@@ -86,22 +82,23 @@ return {
 				}, {
 					{ name = "buffer", priority = 250 },
 				}),
-				-- Add formatting for better display
 				formatting = {
-					format = function(entry, vim_item)
-						-- Add source names
-						vim_item.menu = ({
+					format = lspkind.cmp_format({
+						mode = "text", -- symbol/text/text_symbol/symbol_text
+						maxwidth = 50, -- prevent popup from being too wide
+						ellipsis_char = "...", -- when text exceeds maxwidth
+						show_labelDetails = true,
+						symbol_map = require("mini.icons").list("lsp"),
+						menu = {
 							nvim_lsp = "[LSP]",
 							luasnip = "[Snippet]",
 							buffer = "[Buffer]",
 							path = "[Path]",
-						})[entry.source.name]
-						return vim_item
-					end,
+						},
+					}),
 				},
 			})
 
-			-- Setup command line completion
 			cmp.setup.cmdline({ "/", "?" }, {
 				mapping = cmp.mapping.preset.cmdline(),
 				sources = {

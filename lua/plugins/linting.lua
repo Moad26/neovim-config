@@ -10,7 +10,7 @@ return {
 		}
 
 		lint.linters_by_ft = {
-			-- Python - Using Ruff as the primary linter
+			-- Python
 			python = {
 				"ruff",
 			},

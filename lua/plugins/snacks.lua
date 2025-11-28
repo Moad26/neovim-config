@@ -2,7 +2,6 @@ return {
 	"folke/snacks.nvim",
 	dependencies = {
 		"echasnovski/mini.icons",
-		"nvim-tree/nvim-web-devicons",
 	},
 	lazy = false,
 	priority = 1000,

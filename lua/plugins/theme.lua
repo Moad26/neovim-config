@@ -99,4 +99,19 @@ return {
 	{
 		"sontungexpt/witch",
 	},
+	{
+		"nyoom-engineering/oxocarbon.nvim",
+		config = function()
+			vim.opt.background = "dark"
+		end,
+	},
+	{
+		"kvrohit/rasmus.nvim",
+	},
+	{
+		"eldritch-theme/eldritch.nvim",
+	},
+	{
+		"sam4llis/nvim-tundra",
+	},
 }
