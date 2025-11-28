@@ -62,7 +62,7 @@ return {
 			virtual_text = {
 				enabled = true,
 				source = "always", -- Show source of diagnostic
-				prefix = "●", -- Could also use "▎", "▍", etc.
+				prefix = "●", -- Could be using "▎", "▍", etc.
 			},
 			signs = true,
 			underline = true,
@@ -105,7 +105,7 @@ return {
 		-- Common on_attach function for all LSPs
 		local on_attach = function(client, bufnr)
 			-- Enable completion triggered by <c-x><c-o>
-			vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+			vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 		end
 
 		-- C/C++

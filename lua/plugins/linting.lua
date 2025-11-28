@@ -13,8 +13,6 @@ return {
 			-- Python - Using Ruff as the primary linter
 			python = {
 				"ruff",
-				-- Optionally keep mypy for type checking if you want static type analysis
-				-- "mypy"
 			},
 
 			-- JavaScript/TypeScript
@@ -59,7 +57,7 @@ return {
 		end
 
 		local function linter_in_linters(linters, linter_name)
-			for _, v in ipairs(linters) do
+			for k, v in pairs(linters) do
 				if v == linter_name then
 					return true
 				end
@@ -67,45 +65,19 @@ return {
 			return false
 		end
 
-		local function remove_linter_if_missing_config_file(linters, linter_name, config_file_names)
-			if linter_in_linters(linters, linter_name) then
-				local found = false
-				for _, config_file in ipairs(config_file_names) do
-					if file_in_cwd(config_file) then
-						found = true
-						break
-					end
-				end
-				if not found then
-					remove_linter(linters, linter_name)
-				end
+		local function remove_linter_if_missing_config_file(linters, linter_name, config_file_name)
+			if linter_in_linters(linters, linter_name) and not file_in_cwd(config_file_name) then
+				remove_linter(linters, linter_name)
 			end
 		end
 
 		local function try_linting()
 			local linters = lint.linters_by_ft[vim.bo.filetype]
-			--[[			if linters then
-				-- Make a copy to avoid modifying the original table
-				linters = vim.deepcopy(linters)
 
-				-- Remove ESLint if no config file is found
-				remove_linter_if_missing_config_file(linters, "eslint_d", {
-					".eslintrc.js",
-					".eslintrc.cjs",
-					".eslintrc.json",
-					"eslint.config.js",
-					"eslint.config.mjs",
-					".eslintrc.yaml",
-					".eslintrc.yml",
-				})
-
-				-- Remove mypy if no config file is found (optional, mypy can work without config)
-				-- remove_linter_if_missing_config_file(linters, "mypy", { "mypy.ini", ".mypy.ini", "pyproject.toml", "setup.cfg" })
-				
-				-- Remove ruff if no config file is found (optional, ruff works well with defaults)
-				-- remove_linter_if_missing_config_file(linters, "ruff", { "ruff.toml", "pyproject.toml", ".ruff.toml" })
-			end
-]]
+			-- if linters then
+			--   -- remove_linter_if_missing_config_file(linters, "eslint_d", ".eslintrc.cjs")
+			--   remove_linter_if_missing_config_file(linters, "eslint_d", "eslint.config.js")
+			-- end
 
 			lint.try_lint(linters)
 		end
