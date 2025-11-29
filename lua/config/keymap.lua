@@ -25,7 +25,7 @@ vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 vim.keymap.set("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
 vim.keymap.set("n", "<leader>bD", "<cmd>bdelete!<cr>", { desc = "Delete Buffer (Force)" })
-vim.keymap.set("n", "<leader>bo", "<cmd>%bdelete|edit #|normal `\"<cr>", { desc = "Delete other buffers" })
+vim.keymap.set("n", "<leader>bo", '<cmd>%bdelete|edit #|normal `"<cr>', { desc = "Delete other buffers" })
 
 -- =====================================================
 -- SEARCH AND REPLACE
@@ -36,5 +36,9 @@ vim.keymap.set("n", "<leader>h", "<cmd>nohlsearch<cr>", { desc = "Clear search h
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<cr><Esc>", { desc = "Escape and clear hlsearch" })
 
 -- Search and replace word under cursor
-vim.keymap.set("n", "<leader>sr", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-  { desc = "Search and replace word under cursor" })
+vim.keymap.set(
+	"n",
+	"<leader>sr",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Search and replace word under cursor" }
+)
