@@ -1,4 +1,3 @@
-local Snacks = require("snacks")
 return {
 	"folke/snacks.nvim",
 	dependencies = {
@@ -94,7 +93,6 @@ return {
 	},
 
 	keys = {
-		-- Notification history (replaces :Noice)
 		{
 			"<leader>un",
 			function()

@@ -1,9 +1,20 @@
 return {
 	"ibhagwan/fzf-lua",
 	dependencies = { "echasnovski/mini.icons" },
-	opts = {},
 	config = function()
 		local fzf = require("fzf-lua")
+		fzf.setup({
+			keymap = {
+				builtin = {
+					["<Tab>"] = "down",
+					["<S-Tab>"] = "up",
+				},
+				fzf = {
+					["tab"] = "down",
+					["shift-tab"] = "up",
+				},
+			},
+		})
 
 		-- Register as vim.ui.select provider
 		fzf.register_ui_select()
