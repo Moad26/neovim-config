@@ -1,3 +1,4 @@
+local Snacks = require("snacks")
 return {
 	"folke/snacks.nvim",
 	dependencies = {
@@ -8,8 +9,13 @@ return {
 
 	---@type snacks.Config
 	opts = {
-		animate = { enabled = true }, -- smooth UI animations
-		bigfile = { enabled = true }, -- optimize for large files
+		-- Smooth UI animations
+		animate = { enabled = true },
+
+		-- Optimize for large files
+		bigfile = { enabled = true },
+
+		-- Dashboard configuration
 		dashboard = {
 			sections = {
 				{ section = "header" },
@@ -17,13 +23,132 @@ return {
 				{ section = "startup" },
 			},
 		},
-		explorer = { enabled = true }, -- UI for file explorers like neo-tree
-		indent = { enabled = true }, -- enhanced indent guides
-		input = { enabled = true }, -- prettier command/input UI
-		quickfile = { enabled = false }, -- set to true if you use it
-		scope = { enabled = false }, -- enable if you want scope highlighting
-		statuscolumn = { enabled = true }, -- line number + diagnostics formatting
-		words = { enabled = true }, -- highlight repeated words
-		util = { enabled = true }, -- utility functions for other snacks modules
+
+		-- UI for file explorers
+		explorer = { enabled = true },
+
+		-- Enhanced indent guides
+		indent = { enabled = true },
+
+		-- Prettier command/input UI (replaces noice input)
+		input = { enabled = true },
+
+		-- Notification system (replaces nvim-notify + noice notify)
+		notifier = {
+			enabled = true,
+			timeout = 3000, -- default timeout in ms
+			width = { min = 40, max = 0.4 },
+			height = { min = 1, max = 0.6 },
+			margin = { top = 0, right = 1, bottom = 0 },
+			padding = true,
+			sort = { "level", "added" },
+			level = vim.log.levels.INFO,
+			icons = {
+				error = " ",
+				warn = " ",
+				info = " ",
+				debug = " ",
+				trace = " ",
+			},
+			style = "compact", -- "compact" or "fancy" or "minimal"
+		},
+
+		-- Quick file opening
+		quickfile = { enabled = false },
+
+		-- Scope highlighting
+		scope = { enabled = false },
+
+		-- Line number + diagnostics formatting (replaces noice statuscolumn)
+		statuscolumn = { enabled = true },
+
+		-- Highlight repeated words
+		words = { enabled = true },
+
+		-- Utility functions
+		util = { enabled = true },
+
+		-- Command palette and search UI (replaces noice command_palette and bottom_search)
+		zen = { enabled = false }, -- optional: zen mode
+
+		-- Scroll improvements (replaces noice smooth scrolling)
+		scroll = { enabled = true },
+
+		-- Terminal integration
+		terminal = {
+			enabled = true,
+			win = {
+				border = "rounded",
+				style = "terminal",
+			},
+		},
+
+		--Lazygit implementation
+		lazygit = {
+			enabled = true,
+			win = {
+				border = "rounded",
+				style = "lazygit",
+			},
+		},
 	},
+
+	keys = {
+		-- Notification history (replaces :Noice)
+		{
+			"<leader>un",
+			function()
+				Snacks.notifier.show_history()
+			end,
+			desc = "Notification History",
+		},
+		-- Terminal
+		{
+			"<leader>tt",
+			function()
+				Snacks.terminal()
+			end,
+			desc = "Toggle Terminal",
+		},
+		-- Lazygit commands
+		{
+			"<leader>lg",
+			function()
+				Snacks.lazygit()
+			end,
+			desc = "LazyGit (Root Dir)",
+		},
+		-- Dismiss all notifications
+		{
+			"<leader>ud",
+			function()
+				Snacks.notifier.hide()
+			end,
+			desc = "Dismiss All Notifications",
+		},
+	},
+
+	init = function()
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "VeryLazy",
+			callback = function()
+				-- Setup notification redirect
+				-- This makes vim.notify use Snacks notifier
+				_G.dd = function(...)
+					Snacks.debug.inspect(...)
+				end
+				_G.bt = function()
+					Snacks.debug.backtrace()
+				end
+				vim.print = _G.dd
+
+				-- Redirect vim.notify to Snacks
+				vim.notify = Snacks.notifier.notify
+			end,
+		})
+		vim.opt.inccommand = "split" -- Show preview of substitutions in split
+
+		-- Better wildmenu (command completion)
+		vim.opt.pumblend = 10
+	end,
 }
