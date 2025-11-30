@@ -12,6 +12,12 @@ vim.opt.termguicolors = true
 
 vim.opt.swapfile = false
 
+vim.opt.splitright = true -- Split vertical windows to the right
+vim.opt.splitbelow = true -- Split horizontal windows below
+vim.opt.scrolloff = 8 -- Minimum lines to keep above/below cursor
+vim.opt.sidescrolloff = 8 -- Minimum columns to keep left/right of cursor
+vim.opt.updatetime = 250 -- Faster completion (default 4000ms)
+vim.opt.timeoutlen = 300 -- Time to wait for mapped sequence (for which-key)
 
 vim.opt.number = true -- Show line numbers
 vim.opt.relativenumber = true -- Show relative line numbers

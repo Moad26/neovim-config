@@ -55,24 +55,49 @@ return {
 						{ "label", "label_description", gap = 1 },
 						{ "kind_icon", "kind", gap = 1 },
 					},
-					components = {
-						kind_icon = {
-							text = function(ctx)
-								local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-								return kind_icon
-							end,
-							-- (optional) use highlights from mini.icons
-							highlight = function(ctx)
-								local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-								return hl
-							end,
-						},
-						kind = {
-							-- (optional) use highlights from mini.icons
-							highlight = function(ctx)
-								local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-								return hl
-							end,
+					completion = {
+						components = {
+							kind_icon = {
+								text = function(ctx)
+									-- Start with mini.icons
+									local icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+
+									-- If LSP source, check for color from documentation
+									if ctx.item.source_name == "LSP" then
+										local color_item = require("nvim-highlight-colors").format(
+											ctx.item.documentation,
+											{ kind = ctx.kind }
+										)
+										if color_item and color_item.abbr ~= "" then
+											icon = color_item.abbr
+										end
+									end
+
+									return icon .. ctx.icon_gap
+								end,
+								highlight = function(ctx)
+									-- Check for color highlight first (higher priority)
+									if ctx.item.source_name == "LSP" then
+										local color_item = require("nvim-highlight-colors").format(
+											ctx.item.documentation,
+											{ kind = ctx.kind }
+										)
+										if color_item and color_item.abbr_hl_group then
+											return color_item.abbr_hl_group
+										end
+									end
+
+									-- Fall back to mini.icons highlight
+									local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+									return hl
+								end,
+							},
+							kind = {
+								highlight = function(ctx)
+									local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+									return hl
+								end,
+							},
 						},
 					},
 				},

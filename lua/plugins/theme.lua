@@ -87,6 +87,9 @@ return {
 	{
 		"ribru17/bamboo.nvim",
 		lazy = true,
+		config = function()
+			require("bamboo").setup({})
+		end,
 	},
 	{
 		"olivercederborg/poimandres.nvim",
