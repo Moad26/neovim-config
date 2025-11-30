@@ -47,7 +47,7 @@ return {
 				warn = " ",
 				info = " ",
 				debug = " ",
-				trace = " ",
+				trace = "󱦹 ",
 			},
 			style = "compact", -- "compact" or "fancy" or "minimal"
 		},
