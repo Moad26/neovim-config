@@ -42,9 +42,9 @@ return {
 	{
 		"sainnhe/gruvbox-material",
 		lazy = true,
-		config = function()
+		--[[config = function()
 			vim.g.gruvbox_material_background = "hard"
-		end,
+		end,]]
 	},
 	{
 		"rose-pine/neovim",
@@ -157,6 +157,18 @@ return {
 	},
 	{
 		"sam4llis/nvim-tundra",
+		lazy = true,
+	},
+	{
+		"olimorris/onedarkpro.nvim",
+		lazy = true,
+	},
+	{
+		"tiagovla/tokyodark.nvim",
+		lazy = true,
+	},
+	{
+		"mellow-theme/mellow.nvim",
 		lazy = true,
 	},
 }

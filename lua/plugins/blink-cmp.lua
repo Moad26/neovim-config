@@ -54,6 +54,7 @@ return {
 					columns = {
 						{ "label", "label_description", gap = 1 },
 						{ "kind_icon", "kind", gap = 1 },
+						{ "source_name" },
 					},
 					completion = {
 						components = {
