@@ -4,10 +4,41 @@ return {
 		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.cmd([[colorscheme tokyonight-night]])
+			local colorscheme_file = vim.fn.stdpath("data") .. "/last_colorscheme.txt"
+
+			local function save_colorscheme(scheme)
+				local file = io.open(colorscheme_file, "w")
+				if file then
+					file:write(scheme)
+					file:close()
+				end
+			end
+
+			local function load_last_colorscheme()
+				local file = io.open(colorscheme_file, "r")
+				if file then
+					local scheme = file:read("*all")
+					file:close()
+					return scheme
+				end
+				return "tokyonight-night"
+			end
+
+			vim.defer_fn(function()
+				local last_colorscheme = load_last_colorscheme()
+				local ok, _ = pcall(vim.cmd.colorscheme, last_colorscheme)
+				if not ok then
+					vim.cmd.colorscheme("tokyonight-night")
+				end
+			end, 0)
+
+			vim.api.nvim_create_autocmd("ColorScheme", {
+				callback = function()
+					save_colorscheme(vim.g.colors_name)
+				end,
+			})
 		end,
 	},
-
 	{
 		"morhetz/gruvbox",
 		lazy = true,
