@@ -29,6 +29,8 @@ return {
 				yellow = get_hl_color("Number", "fg") or "#ECBE7B",
 				orange = get_hl_color("Special", "fg") or "#FF8800",
 			}
+
+			-- Mode colors mapping
 			local mode_colors = {
 				n = colors.red,
 				no = colors.red,
@@ -51,29 +53,6 @@ return {
 				rm = colors.cyan,
 				["r?"] = colors.cyan,
 			}
-			-- Mode colors mapping
-			--[[ local mode_colors = {
-				n = colors.red,
-				no = colors.red,
-				cv = colors.red,
-				ce = colors.red,
-				["!"] = colors.red,
-				t = colors.red,
-				i = colors.green,
-				v = colors.blue,
-				["^V"] = colors.blue,
-				V = colors.blue,
-				c = colors.magenta,
-				s = colors.orange,
-				S = colors.orange,
-				["^S"] = colors.orange,
-				ic = colors.yellow,
-				R = colors.violet,
-				Rv = colors.violet,
-				r = colors.cyan,
-				rm = colors.cyan,
-				["r?"] = colors.cyan,
-			} ]]
 
 			local icons = {
 				mode = "",
@@ -114,6 +93,7 @@ return {
 				options = {
 					component_separators = "",
 					section_separators = "",
+					position = "top",
 					theme = {
 						normal = { c = { fg = colors.fg, bg = colors.bg } },
 						inactive = { c = { fg = colors.fg, bg = colors.bg } },
@@ -238,7 +218,7 @@ return {
 					return msg
 				end,
 				icon = " LSP:",
-				color = { fg = "#ffffff", gui = "bold" },
+				color = { fg = colors.fg, gui = "bold" },
 			})
 			-- Right side
 			ins_right({
