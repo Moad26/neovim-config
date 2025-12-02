@@ -43,11 +43,11 @@ return {
 			sort = { "level", "added" },
 			level = vim.log.levels.INFO,
 			icons = {
-				error = " ",
-				warn = " ",
-				info = " ",
-				debug = " ",
-				trace = "󱦹 ",
+				error = "    ",
+				warn = "     ",
+				info = "     ",
+				debug = "    ",
+				trace = "󱦹    ",
 			},
 			style = "compact", -- "compact" or "fancy" or "minimal"
 		},

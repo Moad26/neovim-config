@@ -29,8 +29,6 @@ return {
 				yellow = get_hl_color("Number", "fg") or "#ECBE7B",
 				orange = get_hl_color("Special", "fg") or "#FF8800",
 			}
-
-			-- Mode colors mapping
 			local mode_colors = {
 				n = colors.red,
 				no = colors.red,
@@ -40,12 +38,12 @@ return {
 				t = colors.red,
 				i = colors.green,
 				v = colors.blue,
-				[""] = colors.blue,
+				[""] = colors.blue,
 				V = colors.blue,
-				c = colors.magenta,
+				c = colors.cyan,
 				s = colors.orange,
 				S = colors.orange,
-				[""] = colors.orange,
+				[""] = colors.orange,
 				ic = colors.yellow,
 				R = colors.violet,
 				Rv = colors.violet,
@@ -53,6 +51,29 @@ return {
 				rm = colors.cyan,
 				["r?"] = colors.cyan,
 			}
+			-- Mode colors mapping
+			--[[ local mode_colors = {
+				n = colors.red,
+				no = colors.red,
+				cv = colors.red,
+				ce = colors.red,
+				["!"] = colors.red,
+				t = colors.red,
+				i = colors.green,
+				v = colors.blue,
+				["^V"] = colors.blue,
+				V = colors.blue,
+				c = colors.magenta,
+				s = colors.orange,
+				S = colors.orange,
+				["^S"] = colors.orange,
+				ic = colors.yellow,
+				R = colors.violet,
+				Rv = colors.violet,
+				r = colors.cyan,
+				rm = colors.cyan,
+				["r?"] = colors.cyan,
+			} ]]
 
 			local icons = {
 				mode = "",
@@ -151,6 +172,7 @@ return {
 				end,
 				padding = { left = 1, right = 0 },
 			})
+
 			ins_left({
 				"filename",
 				cond = conditions.buffer_not_empty,
@@ -161,6 +183,7 @@ return {
 					unnamed = "[No Name]",
 					newfile = "[New]",
 				},
+				padding = { left = 0, right = 0 },
 			})
 
 			ins_left({
@@ -172,7 +195,7 @@ return {
 				"progress",
 				color = { fg = colors.fg },
 			})
-
+			-- Diagnostics part
 			ins_left({
 				"diagnostics",
 				sources = { "nvim_lsp", "nvim_diagnostic" },
@@ -195,6 +218,27 @@ return {
 				function()
 					return "%="
 				end,
+			})
+
+			ins_left({
+				-- Lsp server name .
+				function()
+					local msg = "No Active Lsp"
+					local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+					local clients = vim.lsp.get_clients()
+					if next(clients) == nil then
+						return msg
+					end
+					for _, client in ipairs(clients) do
+						local filetypes = client.config.filetypes
+						if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+							return client.name
+						end
+					end
+					return msg
+				end,
+				icon = " LSP:",
+				color = { fg = "#ffffff", gui = "bold" },
 			})
 			-- Right side
 			ins_right({
