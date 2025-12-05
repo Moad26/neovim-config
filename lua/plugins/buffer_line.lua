@@ -1,5 +1,5 @@
 return {
-	"akinsho/bufferline.nvim",
+	--[[ "akinsho/bufferline.nvim",
 	version = "*",
 	dependencies = { "echasnovski/mini.icons" },
 	config = function()
@@ -18,5 +18,5 @@ return {
 				},
 			},
 		})
-	end,
+	end, ]]
 }

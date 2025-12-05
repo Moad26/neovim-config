@@ -1,4 +1,4 @@
-return {
+--[[ return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "echasnovski/mini.icons" },
 	config = function()
@@ -99,6 +99,14 @@ return {
 						inactive = { c = { fg = colors.fg, bg = colors.bg } },
 					},
 				},
+				tabline = {
+					lualine_a = {},
+					lualine_b = {},
+					lualine_c = {},
+					lualine_x = {},
+					lualine_y = {},
+					lualine_z = {},
+				},
 				sections = {
 					lualine_a = {},
 					lualine_b = {},
@@ -117,10 +125,10 @@ return {
 				},
 			}
 			local function ins_left(component)
-				table.insert(config.sections.lualine_c, component)
+				table.insert(config.tabline.lualine_c, component)
 			end
 			local function ins_right(component)
-				table.insert(config.sections.lualine_x, component)
+				table.insert(config.tabline.lualine_x, component)
 			end
 			ins_left({
 				function()
@@ -264,8 +272,8 @@ return {
 		})
 	end,
 }
-
---[[ return {
+]]
+return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "echasnovski/mini.icons" },
 	config = function()
@@ -291,4 +299,4 @@ return {
 			},
 		})
 	end,
-} ]]
+}

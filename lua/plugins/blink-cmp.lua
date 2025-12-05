@@ -2,7 +2,7 @@ return {
 	"saghen/blink.cmp",
 	lazy = false,
 	dependencies = {
-		{ "nvim-mini/mini.nvim", version = false },
+		"nvim-mini/mini.nvim",
 		"rafamadriz/friendly-snippets",
 		"L3MON4D3/LuaSnip",
 	},
