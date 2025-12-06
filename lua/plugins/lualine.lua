@@ -82,10 +82,14 @@ return {
 				end,
 			}
 			local get_ftype_icon = function()
+				if not has_icon then
+					return ""
+				end -- Safety check
 				local file_name = vim.api.nvim_buf_get_name(0)
-				local icon, hl, _ = MiniIcons.get("file", file_name)
+				local icon, hl, _ = mini_icons.get("file", file_name)
+				local color = vim.fn.synIDattr(vim.fn.hlID(hl), "fg")
 				static.ftype_icon = icon
-				static.ftype_icon_color = hl
+				static.ftype_icon_color = color
 				return static.ftype_icon and static.ftype_icon .. " "
 			end
 			-- Config

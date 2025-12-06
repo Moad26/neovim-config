@@ -10,6 +10,8 @@ return {
 		{ "folke/lazydev.nvim", opts = {} },
 	},
 	config = function()
+		-- this next line is added because lua_ls is not found by nvim while already existing in the mason/bin
+		vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
 		local keymap = vim.keymap
 		local fzf = require("fzf-lua")
 		local mason = require("mason")
@@ -67,7 +69,7 @@ return {
 				map("<leader>d", vim.diagnostic.open_float, "show line diagnostics")
 				map("[d", vim.diagnostic.goto_prev, "go to previous diagnostic")
 				map("]d", vim.diagnostic.goto_next, "go to next diagnostic")
-				map("k", vim.lsp.buf.hover, "show documentation")
+				map("K", vim.lsp.buf.hover, "show documentation")
 				map("<leader>rs", ":lsprestart<cr>", "restart lsp")
 				map("<leader>rn", vim.lsp.buf.rename, "smart rename")
 				map("<leader>ca", vim.lsp.buf.code_action, "see available code actions")
@@ -195,6 +197,7 @@ return {
 				},
 			},
 			lua_ls = {
+				cmd = { vim.fn.stdpath("data") .. "/mason/bin/lua-language-server" },
 				settings = {
 					Lua = {
 						runtime = { version = "LuaJIT" },
@@ -243,7 +246,6 @@ return {
 
 		mason_lspconfig.setup({
 			ensure_installed = vim.tbl_keys(servers),
-
 			automatic_enable = true,
 		})
 	end,
