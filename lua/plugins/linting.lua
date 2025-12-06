@@ -10,6 +10,8 @@ return {
 		}
 
 		lint.linters_by_ft = {
+			-- Go
+			go = { "golangcilint" },
 			-- Python
 			python = {
 				"ruff",

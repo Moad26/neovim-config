@@ -1,4 +1,4 @@
---[[ return {
+return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "echasnovski/mini.icons" },
 	config = function()
@@ -272,8 +272,8 @@
 		})
 	end,
 }
-]]
-return {
+
+--[[ return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = { "echasnovski/mini.icons" },
 	config = function()
@@ -299,4 +299,4 @@ return {
 			},
 		})
 	end,
-}
+} ]]

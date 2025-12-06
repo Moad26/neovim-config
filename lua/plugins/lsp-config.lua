@@ -2,87 +2,88 @@ return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
 		"saghen/blink.cmp",
+		"williamboman/mason.nvim",
+		"whoissethdaniel/mason-tool-installer.nvim",
+		"williamboman/mason-lspconfig.nvim",
+		"b0o/schemastore.nvim",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/lazydev.nvim", opts = {} },
 	},
 	config = function()
 		local keymap = vim.keymap
 		local fzf = require("fzf-lua")
+		local mason = require("mason")
+		local mason_lspconfig = require("mason-lspconfig")
+		local mason_tool_installer = require("mason-tool-installer")
 
-		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+		mason.setup({
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+			},
+		})
+
+		mason_tool_installer.setup({
+			ensure_installed = {
+				"prettier",
+				"stylua",
+				"ruff",
+				"clang-format",
+				"eslint_d",
+				"mypy",
+				"cpplint",
+				"jsonlint",
+				"markdownlint",
+				"shfmt",
+				"shellcheck",
+				"gofumpt",
+				"goimports",
+				"golines",
+				"golangci-lint",
+				"delve",
+				"debugpy",
+				"taplo",
+			},
+		})
+
+		vim.api.nvim_create_autocmd("lspattach", {
+			group = vim.api.nvim_create_augroup("userlspconfig", {}),
 			callback = function(ev)
 				local opts = { buffer = ev.buf, silent = true }
-				opts.desc = "Show LSP references"
-				keymap.set("n", "gR", fzf.lsp_references, opts)
+				local function map(keys, func, desc)
+					opts.desc = desc
+					keymap.set("n", keys, func, opts)
+				end
 
-				opts.desc = "Go to declaration"
-				keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-
-				opts.desc = "Show LSP definitions"
-				keymap.set("n", "gd", fzf.lsp_definitions, opts)
-
-				opts.desc = "Show LSP implementations"
-				keymap.set("n", "gi", fzf.lsp_implementations, opts)
-
-				opts.desc = "Show LSP type definitions"
-				keymap.set("n", "gt", fzf.lsp_typedefs, opts)
-
-				opts.desc = "See available code actions"
-				keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-
-				opts.desc = "Smart rename"
-				keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-
-				opts.desc = "Show buffer diagnostics"
-				keymap.set("n", "<leader>D", fzf.diagnostics_document, opts)
-
-				opts.desc = "Show line diagnostics"
-				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-
-				opts.desc = "Go to previous diagnostic"
-				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-
-				opts.desc = "Go to next diagnostic"
-				keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-
-				opts.desc = "Show documentation for what is under cursor"
-				keymap.set("n", "K", vim.lsp.buf.hover, opts)
-
-				opts.desc = "Restart LSP"
-				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+				map("gr", fzf.lsp_references, "show lsp references")
+				map("gd", vim.lsp.buf.declaration, "go to declaration")
+				map("gd", fzf.lsp_definitions, "show lsp definitions")
+				map("gi", fzf.lsp_implementations, "show lsp implementations")
+				map("gt", fzf.lsp_typedefs, "show lsp type definitions")
+				map("<leader>d", fzf.diagnostics_document, "show buffer diagnostics")
+				map("<leader>d", vim.diagnostic.open_float, "show line diagnostics")
+				map("[d", vim.diagnostic.goto_prev, "go to previous diagnostic")
+				map("]d", vim.diagnostic.goto_next, "go to next diagnostic")
+				map("k", vim.lsp.buf.hover, "show documentation")
+				map("<leader>rs", ":lsprestart<cr>", "restart lsp")
+				map("<leader>rn", vim.lsp.buf.rename, "smart rename")
+				map("<leader>ca", vim.lsp.buf.code_action, "see available code actions")
 			end,
 		})
 
-		-- Configure diagnostics display
 		vim.diagnostic.config({
-			virtual_text = {
-				enabled = true,
-				source = "always",
-				prefix = "●",
-			},
+			virtual_text = { enabled = true, source = "always", prefix = "●" },
 			signs = true,
 			underline = true,
-			update_in_insert = false,
-			severity_sort = true,
-			float = {
-				focusable = false,
-				close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-				border = "rounded",
-				source = "always",
-				prefix = " ",
-				scope = "cursor",
-				header = "",
-				format = function(diagnostic)
-					return string.format("%s (%s)", diagnostic.message, diagnostic.source)
-				end,
-			},
+			float = { border = "rounded", source = "always" },
 		})
 
-		-- Define diagnostic signs
-		local signs = { Error = " ", Warn = " ", Hint = "󰌶 ", Info = " " }
+		local signs = { error = "✘ ", warn = "▲ ", hint = "⚑ ", info = "» " }
 		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
+			local hl = "diagnosticsign" .. type
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 		end
 
@@ -90,243 +91,160 @@ return {
 
 		local on_attach = function(client, bufnr)
 			vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+			if client.name == "ts_ls" or client.name == "volar" then
+				client.server_capabilities.documentformattingprovider = false
+			end
+			if client.server_capabilities.inlayhintprovider then
+				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+			end
 		end
 
-		-- Configure all LSP servers
-		-- C/C++
-		vim.lsp.config.clangd = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			cmd = {
-				"clangd",
-				"--background-index",
-				"--clang-tidy",
-				"--header-insertion=iwyu",
-				"--completion-style=bundled",
-				"--function-arg-placeholders",
-				"--fallback-style=llvm",
-			},
-			init_options = {
-				usePlaceholders = true,
-			},
-		}
-
-		-- Python
-		vim.lsp.config.pyright = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				python = {
-					analysis = {
-						autoSearchPaths = true,
-						diagnosticMode = "workspace",
-						useLibraryCodeForTypes = true,
-						typeCheckingMode = "basic",
-						reportOperatorIssue = "none",
-						reportReturnType = "warning",
-						reportOptionalMemberAccess = "warning",
-						reportOptionalOperand = "warning",
-						reportOptionalSubscript = "warning",
-						reportGeneralTypeIssues = "warning",
-					},
-				},
-			},
-		}
-
-		-- JavaScript/TypeScript
-		vim.lsp.config.ts_ls = {
-			capabilities = capabilities,
-			on_attach = function(client, bufnr)
-				client.server_capabilities.documentFormattingProvider = false
-				on_attach(client, bufnr)
-			end,
-			filetypes = {
-				"typescript",
-				"typescriptreact",
-				"javascript",
-				"javascriptreact",
-			},
-			settings = {
-				typescript = {
-					inlayHints = {
-						includeInlayParameterNameHints = "all",
-						includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-						includeInlayFunctionParameterTypeHints = true,
-						includeInlayVariableTypeHints = true,
-						includeInlayPropertyDeclarationTypeHints = true,
-						includeInlayFunctionLikeReturnTypeHints = true,
-						includeInlayEnumMemberValueHints = true,
-					},
-				},
-				javascript = {
-					inlayHints = {
-						includeInlayParameterNameHints = "all",
-						includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-						includeInlayFunctionParameterTypeHints = true,
-						includeInlayVariableTypeHints = true,
-						includeInlayPropertyDeclarationTypeHints = true,
-						includeInlayFunctionLikeReturnTypeHints = true,
-						includeInlayEnumMemberValueHints = true,
-					},
-				},
-			},
-		}
-
-		-- GraphQL
-		vim.lsp.config.graphql = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = { "graphql", "gql", "svelte", "astro", "vue" },
-		}
-
-		-- HTML
-		vim.lsp.config.html = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = { "html", "templ" },
-		}
-
-		-- CSS
-		vim.lsp.config.cssls = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				css = {
-					validate = true,
-					lint = {
-						unknownAtRules = "ignore",
-					},
-				},
-				scss = {
-					validate = true,
-					lint = {
-						unknownAtRules = "ignore",
-					},
-				},
-				less = {
-					validate = true,
-					lint = {
-						unknownAtRules = "ignore",
-					},
-				},
-			},
-		}
-
-		-- Tailwind CSS
-		vim.lsp.config.tailwindcss = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-		}
-
-		-- Emmet
-		vim.lsp.config.emmet_ls = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = {
-				"html",
-				"css",
-				"scss",
-				"javascript",
-				"javascriptreact",
-				"typescript",
-				"typescriptreact",
-				"vue",
-			},
-		}
-
-		-- JSON
-		vim.lsp.config.jsonls = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				json = {
-					validate = { enable = true },
-					schemas = {
-						{
-							fileMatch = { "package.json" },
-							url = "https://json.schemastore.org/package.json",
+		local servers = {
+			gopls = {
+				settings = {
+					gopls = {
+						gofumpt = true,
+						codelenses = { generate = true },
+						hints = {
+							assignVariableTypes = true,
+							compositeLiteralFields = true,
+							compositeLiteralTypes = true,
+							constantValues = true,
+							functionTypeParameters = true,
+							parameterNames = true,
+							rangeVariableTypes = true,
 						},
-						{
-							fileMatch = { "tsconfig.json", "tsconfig.*.json" },
-							url = "https://json.schemastore.org/tsconfig.json",
+						analyses = {
+							fieldalignment = true,
+							useany = true,
+						},
+						usePlaceholders = true,
+						completeUnimported = true,
+						directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+						staticcheck = true,
+					},
+				},
+			},
+			clangd = {
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--clang-tidy",
+					"--header-insertion=iwyu",
+					"--completion-style=bundled",
+					"--fallback-style=llvm",
+				},
+				init_options = { usePlaceholders = true },
+			},
+			pyright = {
+				settings = {
+					python = {
+						analysis = {
+							autoSearchPaths = true,
+							diagnosticMode = "workspace",
+							useLibraryCodeForTypes = true,
+							typeCheckingMode = "basic",
+							reportReturnType = "warning",
+							reportOptionalMemberAccess = "warning",
+							reportOptionalOperand = "warning",
+							reportOptionalSubscript = "warning",
+							reportGeneralTypeIssues = "warning",
 						},
 					},
 				},
 			},
-		}
-
-		-- Lua
-		vim.lsp.config.lua_ls = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				Lua = {
-					runtime = {
-						version = "LuaJIT",
+			ts_ls = {
+				settings = {
+					typescript = {
+						inlayHints = {
+							includeInlayParameterNameHints = "all",
+							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayVariableTypeHints = true,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayEnumMemberValueHints = true,
+						},
 					},
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						library = vim.api.nvim_get_runtime_file("", true),
-						checkThirdParty = false,
-					},
-					telemetry = {
-						enable = false,
+					javascript = {
+						inlayHints = {
+							includeInlayParameterNameHints = "all",
+							includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+							includeInlayFunctionParameterTypeHints = true,
+							includeInlayVariableTypeHints = true,
+							includeInlayPropertyDeclarationTypeHints = true,
+							includeInlayFunctionLikeReturnTypeHints = true,
+							includeInlayEnumMemberValueHints = true,
+						},
 					},
 				},
 			},
-		}
-
-		-- Markdown
-		vim.lsp.config.marksman = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-		}
-
-		-- Bash
-		vim.lsp.config.bashls = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				bashIde = {
-					globPattern = "*@(.sh|.inc|.bash|.command)",
+			cssls = {
+				settings = {
+					css = { validate = true, lint = { unknownAtRules = "ignore" } },
+					scss = { validate = true, lint = { unknownAtRules = "ignore" } },
+					less = { validate = true, lint = { unknownAtRules = "ignore" } },
 				},
 			},
-		}
-
-		-- CMake
-		vim.lsp.config.cmake = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-		}
-
-		-- Typst
-		vim.lsp.config.tinymist = {
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				formatterMode = "typstyle",
-				exportPdf = "never",
-				semanticTokens = "disable",
+			jsonls = {
+				settings = {
+					json = {
+						validate = { enable = true },
+						schemas = require("schemastore").json.schemas(),
+					},
+				},
 			},
+			lua_ls = {
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						diagnostics = { globals = { "vim" } },
+						workspace = { library = vim.api.nvim_get_runtime_file("", true), checkThirdParty = false },
+						telemetry = { enable = false },
+					},
+				},
+			},
+			bashls = {
+				settings = { bashIde = { globPattern = "*@(.sh|.inc|.bash|.command)" } },
+			},
+			tinymist = {
+				settings = { formatterMode = "typstyle", exportPdf = "never", semanticTokens = "disable" },
+			},
+			html = { filetypes = { "html", "templ" } },
+			graphql = { filetypes = { "graphql", "gql", "svelte", "astro", "vue" } },
+			emmet_ls = {
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"vue",
+				},
+			},
+			svelte = {},
+			tailwindcss = {},
+			marksman = {},
+			cmake = {},
 		}
 
-		vim.lsp.enable({
-			"clangd",
-			"pyright",
-			"ts_ls",
-			"graphql",
-			"html",
-			"cssls",
-			"tailwindcss",
-			"emmet_ls",
-			"jsonls",
-			"lua_ls",
-			"marksman",
-			"bashls",
-			"cmake",
-			"tinymist",
+		for name, config in pairs(servers) do
+			if name == "tsserver" then
+				name = "ts_ls"
+			end
+
+			config.capabilities = capabilities
+			config.on_attach = on_attach
+
+			vim.lsp.config(name, config)
+		end
+
+		mason_lspconfig.setup({
+			ensure_installed = vim.tbl_keys(servers),
+
+			automatic_enable = true,
 		})
 	end,
 }

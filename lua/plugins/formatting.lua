@@ -37,7 +37,8 @@ return {
 				-- Shell
 				sh = { "shfmt" },
 				bash = { "shfmt" },
-
+				-- Go (Updated with golines)
+				go = { "goimports", "gofumpt", "golines" },
 				-- Other
 				toml = { "taplo" },
 				typst = { "typstyle" },
@@ -57,6 +58,9 @@ return {
 
 			-- Formatter-specific options
 			formatters = {
+				golines = {
+					prepend_args = { "--max-len=120" },
+				},
 				-- Customize prettier
 				prettier = {
 					-- You can add custom options here if needed
