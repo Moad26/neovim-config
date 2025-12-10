@@ -39,6 +39,23 @@ return {
 			})
 		end,
 	},
+	{ "dgox16/oldworld.nvim", lazy = true },
+	{ "topazape/oldtale.nvim", lazy = true },
+	{ "yorumicolors/yorumi.nvim", lazy = true },
+	{ "slugbyte/lackluster.nvim", lazy = true },
+	{ "scottmckendry/cyberdream.nvim", lazy = true },
+	{ "ramojus/mellifluous.nvim", lazy = true },
+	{
+		"0xstepit/flow.nvim",
+		lazy = true,
+		opts = {
+			theme = {
+				style = "dark", --  "dark" | "light"
+				contrast = "default", -- "default" | "high"
+				transparent = false, -- true | false
+			},
+		},
+	},
 	{
 		"morhetz/gruvbox",
 		lazy = true,

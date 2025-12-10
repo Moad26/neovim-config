@@ -105,7 +105,6 @@ return {
 			gopls = {
 				settings = {
 					gopls = {
-						gofumpt = true,
 						codelenses = { generate = true },
 						hints = {
 							assignVariableTypes = true,

@@ -56,49 +56,48 @@ return {
 						{ "kind_icon", "kind", gap = 1 },
 						{ "source_name" },
 					},
-					completion = {
-						components = {
-							kind_icon = {
-								text = function(ctx)
-									-- Start with mini.icons
-									local icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
 
-									-- If LSP source, check for color from documentation
-									if ctx.item.source_name == "LSP" then
-										local color_item = require("nvim-highlight-colors").format(
-											ctx.item.documentation,
-											{ kind = ctx.kind }
-										)
-										if color_item and color_item.abbr ~= "" then
-											icon = color_item.abbr
-										end
+					components = {
+						kind_icon = {
+							text = function(ctx)
+								-- Start with mini.icons
+								local icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
+
+								-- If LSP source, check for color from documentation
+								if ctx.item.source_name == "LSP" then
+									local color_item = require("nvim-highlight-colors").format(
+										ctx.item.documentation,
+										{ kind = ctx.kind }
+									)
+									if color_item and color_item.abbr ~= "" then
+										icon = color_item.abbr
 									end
+								end
 
-									return icon .. ctx.icon_gap
-								end,
-								highlight = function(ctx)
-									-- Check for color highlight first (higher priority)
-									if ctx.item.source_name == "LSP" then
-										local color_item = require("nvim-highlight-colors").format(
-											ctx.item.documentation,
-											{ kind = ctx.kind }
-										)
-										if color_item and color_item.abbr_hl_group then
-											return color_item.abbr_hl_group
-										end
+								return icon .. ctx.icon_gap
+							end,
+							highlight = function(ctx)
+								-- Check for color highlight first (higher priority)
+								if ctx.item.source_name == "LSP" then
+									local color_item = require("nvim-highlight-colors").format(
+										ctx.item.documentation,
+										{ kind = ctx.kind }
+									)
+									if color_item and color_item.abbr_hl_group then
+										return color_item.abbr_hl_group
 									end
+								end
 
-									-- Fall back to mini.icons highlight
-									local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-									return hl
-								end,
-							},
-							kind = {
-								highlight = function(ctx)
-									local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-									return hl
-								end,
-							},
+								-- Fall back to mini.icons highlight
+								local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+								return hl
+							end,
+						},
+						kind = {
+							highlight = function(ctx)
+								local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
+								return hl
+							end,
 						},
 					},
 				},

@@ -8,13 +8,12 @@ return {
 
 	---@type snacks.Config
 	opts = {
-		-- Smooth UI animations
 		animate = { enabled = true },
 
-		-- Optimize for large files
 		bigfile = { enabled = true },
 
-		-- Dashboard configuration
+		quickfile = { enabled = true },
+
 		dashboard = {
 			preset = {
 				header = [[
@@ -34,19 +33,17 @@ o8o        `8        `8'       o888o o8o        o888o
 			},
 		},
 
-		-- UI for file explorers
 		explorer = { enabled = true },
 
-		-- Enhanced indent guides
 		indent = { enabled = true },
 
-		-- Prettier command/input UI (replaces noice input)
 		input = { enabled = true },
 
-		-- Notification system (replaces nvim-notify + noice notify)
+		scope = { enabled = true },
+
 		notifier = {
 			enabled = true,
-			timeout = 3000, -- default timeout in ms
+			timeout = 3000,
 			width = { min = 40, max = 0.4 },
 			height = { min = 1, max = 0.6 },
 			margin = { top = 0, right = 1, bottom = 0 },
@@ -60,31 +57,19 @@ o8o        `8        `8'       o888o o8o        o888o
 				debug = " ",
 				trace = "󱦹 ",
 			},
-			style = "compact", -- "compact" or "fancy" or "minimal"
+			style = "compact",
 		},
 
-		-- Quick file opening
-		quickfile = { enabled = false },
-
-		-- Scope highlighting
-		scope = { enabled = false },
-
-		-- Line number + diagnostics formatting (replaces noice statuscolumn)
 		statuscolumn = { enabled = true },
 
-		-- Highlight repeated words
 		words = { enabled = true },
 
-		-- Utility functions
 		util = { enabled = true },
 
-		-- Command palette and search UI (replaces noice command_palette and bottom_search)
-		zen = { enabled = false }, -- optional: zen mode
+		zen = { enabled = true },
 
-		-- Scroll improvements (replaces noice smooth scrolling)
 		scroll = { enabled = true },
 
-		-- Terminal integration
 		terminal = {
 			enabled = true,
 			win = {
@@ -93,7 +78,6 @@ o8o        `8        `8'       o888o o8o        o888o
 			},
 		},
 
-		--Lazygit implementation
 		lazygit = {
 			enabled = true,
 			win = {
@@ -111,29 +95,64 @@ o8o        `8        `8'       o888o o8o        o888o
 			end,
 			desc = "Notification History",
 		},
-		-- Terminal
-		{
-			"<leader>tt",
-			function()
-				Snacks.terminal()
-			end,
-			desc = "Toggle Terminal",
-		},
-		-- Lazygit commands
-		{
-			"<leader>lg",
-			function()
-				Snacks.lazygit()
-			end,
-			desc = "LazyGit (Root Dir)",
-		},
-		-- Dismiss all notifications
 		{
 			"<leader>ud",
 			function()
 				Snacks.notifier.hide()
 			end,
 			desc = "Dismiss All Notifications",
+		},
+
+		{
+			"<leader>bd",
+			function()
+				Snacks.bufdelete()
+			end,
+			desc = "Delete Buffer",
+		},
+		{
+			"<leader>z",
+			function()
+				Snacks.zen()
+			end,
+			desc = "Toggle Zen Mode",
+		},
+		{
+			"<leader>Z",
+			function()
+				Snacks.zen.zoom()
+			end,
+			desc = "Toggle Zoom",
+		},
+
+		{
+			"<leader>lg",
+			function()
+				Snacks.lazygit()
+			end,
+			desc = "LazyGit",
+		},
+		{
+			"<leader>gb",
+			function()
+				Snacks.git.blame_line()
+			end,
+			desc = "Git Blame Line",
+		},
+		{
+			"<leader>go",
+			function()
+				Snacks.gitbrowse()
+			end,
+			desc = "Open in GitHub/GitLab",
+		},
+
+		{
+			"<leader>tt",
+			function()
+				Snacks.terminal()
+			end,
+			desc = "Toggle Terminal",
 		},
 	},
 
@@ -142,7 +161,6 @@ o8o        `8        `8'       o888o o8o        o888o
 			pattern = "VeryLazy",
 			callback = function()
 				-- Setup notification redirect
-				-- This makes vim.notify use Snacks notifier
 				_G.dd = function(...)
 					Snacks.debug.inspect(...)
 				end
@@ -150,14 +168,10 @@ o8o        `8        `8'       o888o o8o        o888o
 					Snacks.debug.backtrace()
 				end
 				vim.print = _G.dd
-
-				-- Redirect vim.notify to Snacks
 				vim.notify = Snacks.notifier.notify
 			end,
 		})
-		vim.opt.inccommand = "split" -- Show preview of substitutions in split
-
-		-- Better wildmenu (command completion)
+		vim.opt.inccommand = "split"
 		vim.opt.pumblend = 10
 	end,
 }
