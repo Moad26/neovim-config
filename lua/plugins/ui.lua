@@ -376,18 +376,9 @@ o8o        `8        `8'       o888o o8o        o888o
 						unnamed = "[No Name]",
 						newfile = "[New]",
 					},
-					padding = { left = 0, right = 0 },
+					padding = { left = 0, right = 1 },
 				})
 
-				ins_left({
-					"location",
-					color = { fg = colors.fg },
-				})
-
-				ins_left({
-					"progress",
-					color = { fg = colors.fg },
-				})
 				-- Diagnostics part
 				ins_left({
 					"diagnostics",
@@ -404,37 +395,10 @@ o8o        `8        `8'       o888o o8o        o888o
 						info = { fg = colors.info },
 						hint = { fg = colors.hint },
 					},
-				})
-
-				-- Center divider
-				ins_left({
-					function()
-						return "%="
-					end,
+					padding = { left = 1, right = 1 },
 				})
 
 				ins_left({
-					-- Lsp server name .
-					function()
-						local msg = "No Active Lsp"
-						local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
-						local clients = vim.lsp.get_clients()
-						if next(clients) == nil then
-							return msg
-						end
-						for _, client in ipairs(clients) do
-							local filetypes = client.config.filetypes
-							if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-								return client.name
-							end
-						end
-						return msg
-					end,
-					icon = " LSP:",
-					color = { fg = colors.fg, gui = "bold" },
-				})
-				-- Right side
-				ins_right({
 					"diff",
 					cond = conditions.check_git_workspace,
 					symbols = {
@@ -447,6 +411,42 @@ o8o        `8        `8'       o888o o8o        o888o
 						modified = { fg = colors.changed },
 						removed = { fg = colors.removed },
 					},
+				})
+				-- Lsp
+				ins_right({
+					-- Lsp server name .
+					function()
+						local msg = "No Active Lsp"
+						local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+						local clients = vim.lsp.get_clients()
+						if next(clients) == nil then
+							return msg
+						end
+						local client_names = {}
+						for _, client in ipairs(clients) do
+							table.insert(client_names, client.name)
+						end
+						return table.concat(client_names, ",")
+					end,
+					icon = " LSP:",
+					color = { fg = colors.fg, gui = "bold" },
+				})
+				-- Center divider
+				-- ins_left({
+				-- 	function()
+				-- 		return "%="
+				-- 	end,
+				-- })
+
+				-- Right side
+				ins_right({
+					"location",
+					color = { fg = colors.fg },
+				})
+
+				ins_right({
+					"progress",
+					color = { fg = colors.fg },
 				})
 
 				ins_right({

@@ -62,12 +62,10 @@ return {
 					end
 
 					map("gr", fzf.lsp_references, "show lsp references")
-					map("gd", vim.lsp.buf.declaration, "go to declaration")
 					map("gd", fzf.lsp_definitions, "show lsp definitions")
 					map("gi", fzf.lsp_implementations, "show lsp implementations")
 					map("gt", fzf.lsp_typedefs, "show lsp type definitions")
 					map("<leader>d", fzf.diagnostics_document, "show buffer diagnostics")
-					map("<leader>d", vim.diagnostic.open_float, "show line diagnostics")
 					map("[d", vim.diagnostic.goto_prev, "go to previous diagnostic")
 					map("]d", vim.diagnostic.goto_next, "go to next diagnostic")
 					map("K", vim.lsp.buf.hover, "show documentation")
