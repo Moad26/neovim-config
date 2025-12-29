@@ -16,13 +16,10 @@ return {
 			},
 		})
 
-		-- Register as vim.ui.select provider
 		fzf.register_ui_select()
 
-		-- Keymaps
 		local keymap = vim.keymap.set
 
-		-- File pickers
 		keymap("n", "<C-p>", fzf.files, { desc = "Find Files" })
 		keymap("n", "<leader>fg", fzf.live_grep, { desc = "Live Grep" })
 		keymap("n", "<leader><leader>", fzf.oldfiles, { desc = "Recent Files" })
