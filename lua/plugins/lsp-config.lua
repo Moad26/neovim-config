@@ -137,7 +137,19 @@ return {
 				},
 				init_options = { usePlaceholders = true },
 			},
-			pyright = {
+			basedpyright = {
+				settings = {
+					basedpyright = {
+						analysis = {
+							typeCheckingMode = "standard",
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+							diagnosticMode = "openFilesOnly",
+						},
+					},
+				},
+			},
+			--[[ pyright = {
 				settings = {
 					python = {
 						analysis = {
@@ -153,7 +165,7 @@ return {
 						},
 					},
 				},
-			},
+			}, ]]
 			ts_ls = {
 				settings = {
 					typescript = {

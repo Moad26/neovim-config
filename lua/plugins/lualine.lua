@@ -129,18 +129,18 @@ return {
 				},
 			}
 			local function ins_left(component)
-				table.insert(config.tabline.lualine_c, component)
+				table.insert(config.sections.lualine_c, component)
 			end
 			local function ins_right(component)
-				table.insert(config.tabline.lualine_x, component)
+				table.insert(config.sections.lualine_x, component)
 			end
-			ins_left({
+			--[[ ins_left({
 				function()
 					return "|"
 				end,
 				color = { fg = colors.blue },
 				padding = { left = 0, right = 1 },
-			})
+			}) ]]
 
 			ins_left({
 				function()
@@ -149,7 +149,7 @@ return {
 				color = function()
 					return { fg = mode_colors[vim.fn.mode()] }
 				end,
-				padding = { right = 1 },
+				padding = { left = 1, right = 1 },
 			})
 
 			ins_left({
@@ -254,13 +254,13 @@ return {
 				color = { fg = colors.violet, gui = "bold" },
 			})
 
-			ins_right({
+			--[[ ins_right({
 				function()
 					return "|"
 				end,
 				color = { fg = colors.blue },
 				padding = { left = 1 },
-			})
+			}) ]]
 			require("lualine").setup(config)
 		end
 		setup_lualine()
