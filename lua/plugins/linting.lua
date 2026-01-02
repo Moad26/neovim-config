@@ -26,6 +26,7 @@ return {
 			-- C/C++ (optional, clangd provides most diagnostics)
 			c = { "cpplint" },
 			cpp = { "cpplint" },
+			cuda = { "cpplint" },
 
 			-- JSON
 			json = { "jsonlint" },

@@ -30,6 +30,7 @@ return {
 				-- C/C++
 				c = { "clang-format" },
 				cpp = { "clang-format" },
+				cuda = { "clang-format" },
 
 				-- Lua
 				lua = { "stylua" },
