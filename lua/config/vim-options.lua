@@ -23,7 +23,6 @@ vim.opt.timeoutlen = 300 -- Time to wait for mapped sequence (for which-key)
 vim.opt.number = true -- Show line numbers
 vim.opt.relativenumber = true -- Show relative line numbers
 vim.opt.signcolumn = "yes" -- Always show sign column
-vim.opt.termguicolors = true -- Enable true colors
 vim.opt.list = true -- Show whitespace characters
 
 vim.opt.incsearch = true -- Show search matches while typing

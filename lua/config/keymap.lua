@@ -23,8 +23,6 @@ vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { desc = "Next buffer" })
 
 -- Buffer management
 vim.keymap.set("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
-vim.keymap.set("n", "<leader>bD", "<cmd>bdelete!<cr>", { desc = "Delete Buffer (Force)" })
 vim.keymap.set("n", "<leader>bo", '<cmd>%bdelete|edit #|normal `"<cr>', { desc = "Delete other buffers" })
 
 -- =====================================================

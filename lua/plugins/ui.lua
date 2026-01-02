@@ -170,6 +170,13 @@ o8o        `8        `8'       o888o o8o        o888o
 				end,
 				desc = "Open in GitHub/GitLab",
 			},
+			{
+				"<C-n>",
+				function()
+					---@type fun(opts?: snacks.picker.explorer.Config): snacks.Picker
+					Snacks.explorer()
+				end,
+			},
 
 			{
 				"<leader>tt",

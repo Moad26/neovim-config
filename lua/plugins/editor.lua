@@ -66,4 +66,31 @@ return {
 			vim.o.foldenable = true
 		end,
 	},
+
+	{
+		"mbbill/undotree",
+		config = function()
+			vim.keymap.set("n", "<leader>ut", "<cmd>UndotreeToggle<CR>")
+		end,
+	},
+
+	{
+		"AckslD/nvim-neoclip.lua",
+		dependencies = {
+			-- you'll need at least one of these
+			-- { "nvim-telescope/telescope.nvim" },
+			{ "ibhagwan/fzf-lua" },
+		},
+		config = function()
+			require("neoclip").setup()
+		end,
+	},
+
+	{
+		"brenoprata10/nvim-highlight-colors",
+		config = function()
+			vim.opt.termguicolors = true
+			require("nvim-highlight-colors").setup({})
+		end,
+	},
 }

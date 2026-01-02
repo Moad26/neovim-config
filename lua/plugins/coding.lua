@@ -32,7 +32,7 @@ return {
 			},
 
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer" },
+				default = { "lazydev", "lsp", "path", "snippets", "buffer" },
 				providers = {
 					lazydev = {
 						name = "LazyDev",
@@ -150,5 +150,75 @@ return {
 			vim.opt.termguicolors = true
 			require("bufferline").setup({})
 		end,
+	},
+	{
+		"folke/trouble.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
+		opts = {
+			focus = true,
+		},
+		cmd = "Trouble",
+		keys = {
+			{ "<leader>xw", "<cmd>Trouble diagnostics toggle<CR>", desc = "Open trouble workspace diagnostics" },
+			{
+				"<leader>xd",
+				"<cmd>Trouble diagnostics toggle filter.buf=0<CR>",
+				desc = "Open trouble document diagnostics",
+			},
+			{ "<leader>xq", "<cmd>Trouble quickfix toggle<CR>", desc = "Open trouble quickfix list" },
+			{ "<leader>xl", "<cmd>Trouble loclist toggle<CR>", desc = "Open trouble location list" },
+			{ "<leader>xt", "<cmd>Trouble todo toggle<CR>", desc = "Open todos in trouble" },
+		},
+	},
+
+	--Tmux
+
+	{
+		"christoomey/vim-tmux-navigator",
+		cmd = {
+			"TmuxNavigateLeft",
+			"TmuxNavigateDown",
+			"TmuxNavigateUp",
+			"TmuxNavigateRight",
+			"TmuxNavigatePrevious",
+			"TmuxNavigatorProcessList",
+		},
+		keys = {
+			{ "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+			{ "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+			{ "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+			{ "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+			{ "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+		},
+	},
+	--Treesitter
+
+	{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+		config = function()
+			local config = require("nvim-treesitter.configs")
+			config.setup({
+				auto_install = true,
+				ensure_installed = {
+					"markdown",
+					"markdown_inline",
+				},
+				highlight = {
+					enable = true,
+					disable = { "latex" },
+				},
+				indent = {
+					enable = true,
+					disable = { "latex" },
+				},
+			})
+		end,
+	},
+	{
+		"folke/ts-comments.nvim",
+		opts = {},
+		event = "VeryLazy",
+		enabled = vim.fn.has("nvim-0.10.0") == 1,
 	},
 }

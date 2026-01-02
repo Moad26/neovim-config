@@ -7,6 +7,7 @@ return {
 		require("mini.comment").setup()
 		require("mini.clue").setup()
 		require("mini.pairs").setup()
+		require("mini.indentscope").setup()
 		local miniclue = require("mini.clue")
 		miniclue.setup({
 			triggers = {
