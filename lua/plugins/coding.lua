@@ -13,6 +13,7 @@ return {
 			keymap = {
 				preset = "default",
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+				["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
 				["<C-e>"] = { "hide" },
 				["<CR>"] = { "accept", "fallback" },
 
@@ -101,7 +102,6 @@ return {
 				},
 				documentation = {
 					auto_show = true,
-					auto_show_delay_ms = 200,
 					window = {
 						border = "rounded",
 					},
