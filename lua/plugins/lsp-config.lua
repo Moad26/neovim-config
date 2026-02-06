@@ -240,7 +240,7 @@ return {
 				svelte = {},
 				tailwindcss = {},
 				marksman = {},
-				cmake = {},
+				neocmake = {},
 			}
 
 			for name, config in pairs(servers) do
