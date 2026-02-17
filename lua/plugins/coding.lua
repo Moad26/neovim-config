@@ -192,26 +192,35 @@ return {
 		},
 	},
 	--Treesitter
-
 	{
 		"nvim-treesitter/nvim-treesitter",
+		lazy = false,
 		build = ":TSUpdate",
 		config = function()
-			local config = require("nvim-treesitter.configs")
-			config.setup({
-				auto_install = true,
-				ensure_installed = {
-					"markdown",
-					"markdown_inline",
-				},
-				highlight = {
-					enable = true,
-					disable = { "latex" },
-				},
-				indent = {
-					enable = true,
-					disable = { "latex" },
-				},
+			local treesitter = require("nvim-treesitter")
+			local available_parsers = treesitter.get_available()
+			local installed_parsers = treesitter.get_installed()
+
+			local ts_group = vim.api.nvim_create_augroup("TreesitterSetup", { clear = true })
+
+			vim.api.nvim_create_autocmd("FileType", {
+				group = ts_group,
+				callback = function()
+					local ft = vim.bo.filetype
+
+					if vim.tbl_contains(available_parsers, ft) then
+						if not vim.tbl_contains(installed_parsers, ft) then
+							vim.notify("Auto-installing parser for: " .. ft)
+							treesitter.install(ft)
+							table.insert(installed_parsers, ft)
+						else
+							vim.treesitter.start()
+							vim.wo.foldmethod = "expr"
+							vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+							vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+						end
+					end
+				end,
 			})
 		end,
 	},
