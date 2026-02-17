@@ -198,32 +198,82 @@ return {
 		build = ":TSUpdate",
 		config = function()
 			local treesitter = require("nvim-treesitter")
-			local available_parsers = treesitter.get_available()
-			local installed_parsers = treesitter.get_installed()
+
+			local function enable_ts_features()
+				vim.treesitter.start()
+				vim.wo.foldmethod = "expr"
+				vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+				vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+			end
 
 			local ts_group = vim.api.nvim_create_augroup("TreesitterSetup", { clear = true })
 
 			vim.api.nvim_create_autocmd("FileType", {
 				group = ts_group,
-				callback = function()
-					local ft = vim.bo.filetype
+				callback = function(ev)
+					local ft = vim.bo[ev.buf].filetype
+					if ft == "" then
+						return
+					end
 
-					if vim.tbl_contains(available_parsers, ft) then
-						if not vim.tbl_contains(installed_parsers, ft) then
-							vim.notify("Auto-installing parser for: " .. ft)
-							treesitter.install(ft)
-							table.insert(installed_parsers, ft)
-						else
-							vim.treesitter.start()
-							vim.wo.foldmethod = "expr"
-							vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-							vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-						end
+					-- Query fresh each time so newly installed parsers are detected.
+					local available = treesitter.get_available()
+					if not vim.tbl_contains(available, ft) then
+						return
+					end
+
+					local installed = treesitter.get_installed()
+					if vim.tbl_contains(installed, ft) then
+						enable_ts_features()
+					else
+						vim.notify(
+							("nvim-treesitter: auto-installing parser for '%s'…"):format(ft),
+							vim.log.levels.INFO
+						)
+						-- install() is async; chain onto its promise so features
+						-- are enabled in the triggering buffer once done.
+						treesitter.install(ft):map(function()
+							if vim.api.nvim_buf_is_valid(ev.buf) and vim.bo[ev.buf].filetype == ft then
+								vim.schedule(enable_ts_features)
+							end
+						end)
 					end
 				end,
 			})
 		end,
 	},
+	-- {
+	-- 	"nvim-treesitter/nvim-treesitter",
+	-- 	lazy = false,
+	-- 	build = ":TSUpdate",
+	-- 	config = function()
+	-- 		local treesitter = require("nvim-treesitter")
+	-- 		local available_parsers = treesitter.get_available()
+	-- 		local installed_parsers = treesitter.get_installed()
+	--
+	-- 		local ts_group = vim.api.nvim_create_augroup("TreesitterSetup", { clear = true })
+	--
+	-- 		vim.api.nvim_create_autocmd("FileType", {
+	-- 			group = ts_group,
+	-- 			callback = function()
+	-- 				local ft = vim.bo.filetype
+	--
+	-- 				if vim.tbl_contains(available_parsers, ft) then
+	-- 					if not vim.tbl_contains(installed_parsers, ft) then
+	-- 						vim.notify("Auto-installing parser for: " .. ft)
+	-- 						treesitter.install(ft)
+	-- 						table.insert(installed_parsers, ft)
+	-- 					else
+	-- 						vim.treesitter.start()
+	-- 						vim.wo.foldmethod = "expr"
+	-- 						vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+	-- 						vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+	-- 					end
+	-- 				end
+	-- 			end,
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"folke/ts-comments.nvim",
 		opts = {},
