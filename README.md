@@ -2,7 +2,7 @@
 
 A personal, high-performance Neovim configuration focused on speed, aesthetics, and developer productivity. Built with [lazy.nvim](https://github.com/folke/lazy.nvim).
 
-##  Features
+## Features
 
 - **Fast Startup**: Optimized with `lazy.nvim` module loading.
 - **Aesthetics**: Beautiful UI with `noice.nvim`, `lualine`, and custom themes.
@@ -10,9 +10,10 @@ A personal, high-performance Neovim configuration focused on speed, aesthetics, 
 - **Powerful Navigation**: Fast file finding with `fzf-lua` and file tree management with `neo-tree` & `oil.nvim`.
 - **Modern Essentials**: Includes `snacks.nvim` for a delightful coding experience.
 
-##  Plugins
+## Plugins
 
-###  UI & Experence
+### UI & Experence
+
 - **theme**: Custom color scheme.
 - **lualine**: Status line.
 - **buffer_line**: Buffer management.
@@ -23,7 +24,8 @@ A personal, high-performance Neovim configuration focused on speed, aesthetics, 
 - **colorizer**: Color highlighter.
 - **which-key**: Keybinding helper.
 
-###  LSP & Completion
+### LSP & Completion
+
 - **lsp-config**: Native LSP configuration.
 - **blink-cmp**: Fast completion engine.
 - **formatting**: Auto-formatting (conform.nvim).
@@ -32,15 +34,17 @@ A personal, high-performance Neovim configuration focused on speed, aesthetics, 
 - **tiny-code-actions**: Unobtrusive code actions.
 - **trouble**: Pretty diagnostics list.
 
-###  Navigation
+### Navigation
+
 - **fzf**: Fuzzy finder.
 - **neo-tree**: File explorer tree.
 - **oil**: File explorer as a buffer.
 - **harpoon**: Quick file navigation.
 - **noclip**: Clipboard history.
 
-###  Languages & Tools
-- **Python**: 
+### Languages & Tools
+
+- **Python**:
   - `uv.nvim`: Integration with `uv`.
   - `venv-selector`: Virtual environment switching.
 - **Go**: `go-nvim`.

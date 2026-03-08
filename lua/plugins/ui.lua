@@ -266,8 +266,8 @@ o8o        `8        `8'       o888o o8o        o888o
 				}
 
 				local icons = {
-					mode = "",
-					git_branch = "",
+					mode = " ",
+					git_branch = " ",
 					error = " ",
 					warn = " ",
 					info = " ",

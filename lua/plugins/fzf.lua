@@ -39,6 +39,39 @@ return {
 		keymap("n", "<leader>gs", fzf.git_status, { desc = "Git Status" })
 		keymap("n", "<leader>gc", fzf.git_commits, { desc = "Git Commits" })
 		keymap("n", "<leader>gb", fzf.git_branches, { desc = "Git Branches" })
-		keymap("n", "<leader>tc", fzf.colorschemes, { desc = "Switch Colorscheme" })
+		keymap("n", "<leader>tc", function()
+			fzf.colorschemes({
+				ignore_patterns = {
+					-- native vim/nvim builtins
+					"^blue$",
+					"^darkblue$",
+					"^default$",
+					"^delek$",
+					"^desert$",
+					"^elflord$",
+					"^evening$",
+					"^habamax$",
+					"^industry$",
+					"^koehler$",
+					"^lunaperche$",
+					"^morning$",
+					"^murphy$",
+					"^pablo$",
+					"^peachpuff$",
+					"^quiet$",
+					"^retrobox$",
+					"^ron$",
+					"^shine$",
+					"^slate$",
+					"^sorbet$",
+					"^torte$",
+					"^wildcharm$",
+					"^zaibatsu$",
+					"^zellner$",
+				},
+				sort_lastused = true, -- your last used floats to top, rest alphabetical
+			})
+		end, { desc = "Switch Colorscheme" })
+		-- keymap("n", "<leader>tc", fzf.colorschemes, { desc = "Switch Colorscheme" })
 	end,
 }
